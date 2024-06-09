@@ -42,6 +42,11 @@ html, body, #root {
 .labelInput{
   margin-left: 10px;
 }
+#valorDaCompra{
+  font-size: 24px;
+  color: rgb(0, 80, 172);
+  margin: 0;
+}
 .form-botoes{
   display: flex;
   align-items: center;
@@ -66,12 +71,24 @@ html, body, #root {
   box-shadow: #417be748 0px 5px 16px !important;
 }
 .input-cadastros select{
-  width: 215px;
-  height: 40px;
+  width: 290px;
+  height: 38px;
   border: 2px;
   padding: 10px;
   border-radius: 20px;
-  background-color: #e5e9ec;
+  border: 1px solid #c7c7c7;
+  background-color: #f3f3f3;
+  transition: 0.3s;
+}
+.input-cadastros select:focus{
+  transition: 0.3s;
+  border-color: #417be7;
+  outline: none;
+  box-shadow: #417be748 0px 5px 16px !important;
+}
+.input-cadastros select:checked{
+  background-color: #417be7;
+  color: red;
 }
 .botaoCadastro{
   border-radius: 10px;
@@ -203,4 +220,13 @@ html, body, #root {
 }
 .terceiro input{
   width: 295px !important;
+}
+.conjuntoCard{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+.campoObrigatorio{
+  color: red;
 }

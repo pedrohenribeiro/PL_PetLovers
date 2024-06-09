@@ -1,0 +1,14 @@
+.cardAlerta{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 490px;
+    height: 60px;
+    background-color: #d8e5ffda;
+    border-radius: 10px;
+    color: rgb(31, 64, 211);
+    font-size: 22px;
+    font-weight: 550;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 10px 26px !important;
+}

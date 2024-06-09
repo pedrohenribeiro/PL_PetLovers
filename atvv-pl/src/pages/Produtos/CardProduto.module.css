@@ -1,0 +1,172 @@
+.cardList{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    background-color: #d8e5ffda;
+    box-shadow: hsla(236, 45%, 62%, 0.5) 0px 5px 16px !important;
+    height: 210px;
+    border-radius: 6px;
+    transition: 0.5s;
+
+    
+
+    position: relative;
+    overflow: hidden;
+}
+
+.cardList:hover{
+    transition: 0.4s;
+    transform: translateY(-10px);
+    box-shadow: hsla(236, 60%, 64%, 0.63) 0px 10px 22px !important;
+}
+.cardTitulo{
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    font-size: 24px;
+    
+}
+.cardConteudo{
+    display: flex;
+    flex-direction: row;
+}
+.cardId{
+    margin: 0;
+    height: 70px;
+    position: absolute;
+    justify-self: flex-start;
+    align-self: flex-start;
+    line-height: 60px;
+}
+.cardIdConteudo{
+    margin: 0;
+    font-size: 60px;
+    background: linear-gradient(to right, #0000ff00 0%, #435edac7 60%);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+.cardBotoes{
+    display: flex;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.botao-editar{
+    color: #000000;
+    border: 0px;
+    background-color:unset;
+}
+.botao-editar:hover{
+    color: #4561ff;
+    background-color:unset;
+}
+.botao-deletar{
+    color: #000000;
+    border: 0px;
+    background-color:unset;
+}
+.botao-deletar:hover{
+    color: red;
+    background-color:unset;
+}
+
+
+
+.cardList span:first-of-type{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, transparent, #435edac7);
+    animation: animar1 2s linear infinite;
+}
+.cardList:hover span:first-of-type{
+    background: linear-gradient(to right, transparent, #00a2ffc7);
+    animation: animar1 2s linear infinite;
+}
+
+@keyframes animar1 {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+.cardList span:nth-of-type(2){
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, #435edac7);
+    animation: animar2 2s linear infinite;
+    animation-delay: 1s;
+}
+.cardList:hover span:nth-of-type(2){
+    background: linear-gradient(to bottom, transparent, #00a2ffc7);
+    animation: animar2 2s linear infinite;
+    animation-delay: 1s;
+}
+
+@keyframes animar2 {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+.cardList span:nth-of-type(3){
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to left, transparent, #435edac7);
+    animation: animar3 2s linear infinite;
+}
+
+.cardList:hover span:nth-of-type(3){
+    background: linear-gradient(to left, transparent, #00a2ffc7);
+    animation: animar3 2s linear infinite;
+}
+
+@keyframes animar3 {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.cardList span:last-of-type{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(to top, transparent, #435edac7);
+    animation: animar4 2s linear infinite;
+    animation-delay: 1s;
+}
+.cardList:hover span:nth-of-type(4){
+    background: linear-gradient(to top, transparent, #00a2ffc7);
+    animation: animar4 2s linear infinite;
+    animation-delay: 1s;
+}
+
+
+@keyframes animar4 {
+    0% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}

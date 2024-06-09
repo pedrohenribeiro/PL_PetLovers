@@ -6,7 +6,7 @@ function CadastrarProduto({setCadastrando}){
     const [valor, setValor] = useState('');
 
     async function cadastrarProduto() {
-        console.log("Cadastrar Pet");
+        console.log("Comprar Produto");
         try {
             const newData = {
                 nome: nome,

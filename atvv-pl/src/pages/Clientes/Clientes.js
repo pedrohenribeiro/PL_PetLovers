@@ -1,60 +1,123 @@
-import { FiEdit } from "react-icons/fi";
-import { IoIosRemoveCircleOutline } from "react-icons/io";
+import React, { useState, useEffect } from 'react';
+import CardCliente from "./CardCliente";
+import axios from "axios";
+import SemDados from "../SemDados";
 
 function Clientes(){
+    const [chartClientes, setChartClientes] = useState([]);
+    const [editando, setEditando] = useState("");
+    const [idEditando, setIdEditando] = useState("");
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    async function fetchData() {
+        try {
+            const responseClientes = await axios.get("http://localhost:8080/clientes");
+            const dataClientes = responseClientes.data;
+
+            const processedData = dataClientes.map((itemCliente) => ({
+                ...itemCliente
+            }));
+            setChartClientes(processedData); // Armazena os dados no estado
+            console.log(processedData);
+        } catch (error) {
+            console.error("Erro ao buscar dados:", error);
+        }
+    }
+
+    const DeletarCliente = async (id) => {
+        try {
+            console.log(id)
+            await axios.delete(`http://localhost:8080/produtos/${id}`);
+            console.log("Produto Deletado!")
+            fetchData();
+        } catch (error) {
+          console.error("Erro ao apagar produto:", error);
+        }
+      };
+
+      async function EditarCliente(){
+        try {
+            console.log('Chamando função EditarCliente');
+
+            const newData = {
+                id:idEditando,
+
+            };
+
+            await axios.put('http://localhost:8080/produtos_editar', newData);
+            console.log("Dados atualizados com sucesso!");
+            fetchData()
+            setEditando("")
+        } catch (error) {
+          console.error('Erro ao salvar os dados:', error);
+        }
+      };
+
+    async function abrirModal(id){
+        setIdEditando(id)
+        setEditando("editando")
+    }
+
     return(
-        <div className="containerLista">
-            <h1 className="pb-4">Listagem de Clientes</h1>
-            <table className="table">
-                <thead className="table-dark">
-                    <tr className="table">
-                        <th scope="col">#</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Nome Social</th>
-                        <th scope="col">E-mail</th>
-                        <th scope="col">CPF</th>
-                        <th scope="col">RG</th>
-                        <th scope="col">Telefone</th>
-                        <th scope="col">Editar</th>
-                        <th scope="col">Excluir</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Bruna Souza</td>
-                        <td>Bruninha</td>
-                        <td>bruna032004@gmail.com</td>
-                        <td>000.000.000-00</td>
-                        <td>00.000.000-0</td>
-                        <td>12 93422-4261</td>
-                        <td><button className='botao-editar'><FiEdit size={28}/></button></td>
-                        <td><button className='botao-deletar'><IoIosRemoveCircleOutline size={30}/></button></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Marcos Lima</td>
-                        <td>Marquinhos</td>
-                        <td>marcoslima@gmail.com</td>
-                        <td>111.111.111-11</td>
-                        <td>11.111.111-1</td>
-                        <td>12 98135-8342</td>
-                        <td><button className='botao-editar'><FiEdit size={28}/></button></td>
-                        <td><button className='botao-deletar'><IoIosRemoveCircleOutline size={30}/></button></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Leticia Cardoso</td>
-                        <td>Lele</td>
-                        <td>lelecardoso@gmail.com</td>
-                        <td>222.222.222-22</td>
-                        <td>22.222.222-2</td>
-                        <td>12 98174-1843</td>
-                        <td><button className='botao-editar'><FiEdit size={28}/></button></td>
-                        <td><button className='botao-deletar'><IoIosRemoveCircleOutline size={30}/></button></td>
-                    </tr>
-                </tbody>
-            </table>
+<div className="conjuntoCard">
+            {editando === "editando" && (
+                <div>
+{/*                     <form className="containerConteudo" onSubmit={(e) => { e.preventDefault(); EditarCliente(); }}>
+                        <h2 className="tituloCadastro">Dados do produto {idEditando}:</h2>
+                        <div className="input-cadastros">
+                            <label className="labelInput">Nome do produto:</label>
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                placeholder="Nome do produto" 
+                                aria-label="Nome do produto" 
+                                aria-describedby="basic-addon1" 
+                                value={nomeEditando}
+                                onChange={(e) => setNomeEditando(e.target.value)}
+                            />
+                        </div>
+                        <div className="input-cadastros">
+                            <label className="labelInput">Valor do produto:</label>
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                placeholder="Valor do produto" 
+                                aria-label="Valor do produto" 
+                                aria-describedby="basic-addon1" 
+                                value={valorEditando}
+                                onChange={(e) => setValorEditando(e.target.value)}
+                            />
+                        </div>
+                        <div className="form-botoes">
+                            <button className="botaoCadastro" type="button" onClick={() => setEditando("")}>Voltar</button>
+                            <button className="botaoCadastro" type="submit">Editar</button>
+                        </div>
+                    </form> */}
+                </div>
+            )}
+            {editando !== "editando" && (
+                chartClientes.length > 0 ? (
+                    chartClientes.map((cliente, index) => (
+                        <CardCliente 
+                            key={index} 
+                            id={cliente.id}
+                            nome={cliente.nome}
+                            nomeSocial={cliente.nomeSocial}
+                            email={cliente.email}
+                            cpf={cliente.cpf}
+                            dataEmissaoCpf={cliente.dataEmissaoCpf}
+                            estado={cliente.estado}
+                            DeletarCliente={DeletarCliente}
+                            abrirModal={abrirModal}
+                        />
+                    ))
+                ) : (
+                    <SemDados titulo="Produto" />
+                )
+            )}
         </div>
     )
 }

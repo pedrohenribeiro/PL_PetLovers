@@ -1,0 +1,130 @@
+.cardList{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    background-color: #d8e5ffda;
+    box-shadow: hsla(236, 45%, 62%, 0.5) 0px 5px 16px !important;
+    height: 360px;
+    border-radius: 10px;
+    transition: 0.2s;
+    position: relative;
+}
+.cardList::before{
+    transition: 0.5s;
+    content: '';
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    border: 20px solid transparent;
+    border-top: 20px solid #435edac7;
+    border-right: 20px solid #435edac7;
+}
+.cardList:hover{
+    transition: 0.4s;
+    transform: translateY(-10px);
+    box-shadow: hsla(236, 60%, 64%, 0.63) 0px 10px 22px !important;
+}
+.cardTitulo h3{
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    font-size: 24px;
+    position: relative;
+}
+.cardTitulo h3::before{
+    content: '';
+    position: absolute;
+    height: 4px;
+    width: 50px;
+    background-color: #435edac7;
+    bottom: 0px;
+    border-radius: 100px;
+    /* top: 28px; */
+}
+
+.cardConteudo{
+    display: flex;
+    flex-direction: row;
+}
+.cardId{
+    margin: 0;
+    height: 70px;
+    position: absolute;
+    justify-self: flex-start;
+    align-self: flex-start;
+    line-height: 60px;
+}
+.cardIdConteudo{
+    margin: 0;
+    font-size: 60px;
+    background: linear-gradient(to right, #0000ff00 0%, #435edac7 60%);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+.cardBotoes{
+    display: flex;
+    margin-top: 10px;
+    gap: 20px;
+}
+
+.botao-editar{
+    color: #000000;
+    border: 0px;
+    background-color:unset;
+}
+  
+.botao-editar:hover{
+    color: #4561ff;
+    background-color:unset;
+}
+.botao-deletar{
+    color: #000000;
+    border: 0px;
+    background-color:unset;
+}
+  
+.botao-deletar:hover{
+    color: red;
+    background-color:unset;
+}
+.conteudo{
+    height: 160px;
+    overflow: hidden;
+    position: relative;
+    
+}
+.conteudo::before{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#botaoVerMais{
+    background: none;
+    border: 0px none;
+    font-size: larger;
+    font-style: italic;
+    text-decoration: underline;
+}
+#botaoVerMais:hover{
+    color: #4561ff;
+}
+.cardList.active .conteudo{
+    height: auto;
+}
+.cardList.active{
+    height: auto;
+}
+.cardList.active .conteudo::before{
+    visibility: hidden;
+}
+.areaBotoes{
+    margin-bottom: 30px;
+}
+.informacoes{
+    margin-left: 5px;
+}
