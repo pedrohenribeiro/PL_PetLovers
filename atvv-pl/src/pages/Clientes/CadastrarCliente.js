@@ -11,7 +11,7 @@ function CadastrarCliente({setCadastrando}){
     
     const [cpf, setCpf] = useState('');
     const [dataEmissaoCpf, setDataEmissaoCpf] = useState('');
-    const [dadosRG, setDadosRG] = useState([{ rgCliente: '', ufRgCliente: '', dataEmissaoRgCliente: '' }]);
+    const [dadosRG, setDadosRG] = useState([{ id:'', rgCliente: '', ufRgCliente: '', dataEmissaoRgCliente: '' }]);
     const [rg, setRg] = useState('');
     const [dataEmissaoRg, setDataEmissaoRg] = useState('');
     const [UfRg, setUfRg] = useState('');
@@ -94,7 +94,7 @@ function CadastrarCliente({setCadastrando}){
 
     const adicionarDadosRgs = (e) => {
         e.preventDefault();
-        setDadosRG([...dadosRG, { rgCliente: '', ufRgCliente: '', dataEmissaoRgCliente: '' }]);
+        setDadosRG([...dadosRG, { id:'', rgCliente: '', ufRgCliente: '', dataEmissaoRgCliente: '' }]);
     };    
 
     const atualizarDadosRgs = (e, index) => {
@@ -113,7 +113,11 @@ function CadastrarCliente({setCadastrando}){
     
     return(
         <div>
-            <form className="containerConteudoClientes" onSubmit={(e) => { e.preventDefault(); cadastrarCliente(); }}>
+            <form className="containerConteudoClientes" onSubmit={(e) => { 
+                e.preventDefault(); 
+                console.log('Forms submit')
+                cadastrarCliente(); 
+                }}>
 
                 <div className="topoClientes">
                     <div className="dadosCliente">

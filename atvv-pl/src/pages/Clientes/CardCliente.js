@@ -4,7 +4,7 @@ import { FiEdit } from "react-icons/fi";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 import React, { useState, useEffect } from 'react';
 
-function CardCliente({id,nome,nomeSocial,email,telefone,cpf,dataEmissaoCpf,dadosRgs,estado,cidade,bairro,rua,numero,cep,complemento,
+function CardCliente({id,nome,nomeSocial,email,dadosTelefones,cpf,dataEmissaoCpf,dadosRgs,estado,cidade,bairro,rua,numero,cep,complemento,
     DeletarCliente,AbrirModal
     }){
 
@@ -33,10 +33,10 @@ function CardCliente({id,nome,nomeSocial,email,telefone,cpf,dataEmissaoCpf,dados
                     <b>Email:</b>
                     <p className={styles.informacoes}> {email}</p>
                 </div>
-                {telefone.map((t, index) => (//criar um componente para subistituir essa função
+                {dadosTelefones.map((dados, index) => (//criar um componente para subistituir essa função
                     <div className={styles.cardConteudo} key={index}>  
                             <b>Telefone: {index+1}</b>
-                            <p className={styles.informacoes}>{t}</p>
+                            <p className={styles.informacoes}>{dados.telefone}</p>
                     </div>
                 ))}
                 <div className={styles.cardConteudo}>                 
@@ -118,7 +118,8 @@ function CardCliente({id,nome,nomeSocial,email,telefone,cpf,dataEmissaoCpf,dados
                         <FiEdit 
                             size={28} 
                             title="Editar"
-                            onClick={(e) => AbrirModal(id,nome,nomeSocial,email,telefone,cpf,dataEmissaoCpf,dadosRgs,estado,cidade,bairro,rua,numero,cep,complemento)}
+                            onClick={(e) => 
+                                AbrirModal(id,nome,nomeSocial,email,dadosTelefones,cpf,dataEmissaoCpf,dadosRgs,estado,cidade,bairro,rua,numero,cep,complemento)}
                             />
                     </button>
                     <button className='botao-deletar'>
@@ -141,7 +142,7 @@ function CardCliente({id,nome,nomeSocial,email,telefone,cpf,dataEmissaoCpf,dados
     )
 }
 
-
+/* 
 CardCliente.propTypes = {
     nome: PropTypes.string.isRequired,
     nomeSocial: PropTypes.string.isRequired,
@@ -173,5 +174,5 @@ CardCliente.defaultProps = {
     numero: 0,
     cep: 0,
     complemento: 'Sem complemento',
-}
+} */
 export default CardCliente

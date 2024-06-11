@@ -13,7 +13,7 @@ function Clientes(){
     const [nomeSocialEditando, setNomeSocialEditando] = useState("");
     const [cpfEditando, setCpfEditando] = useState("");
     const [emailEditando, setEmailEditando] = useState("");
-    const [telefoneEditando, setTelefoneEditando] = useState("");
+    const [telefoneEditando, setTelefoneEditando] = useState([]);
     const [dataEmissaoCpfEditando, setDataEmissaoCpfEditando] = useState("");
     const [RgsEditando, setRgsEditando] = useState(""); 
 
@@ -79,13 +79,48 @@ function Clientes(){
       async function EditarCliente(){
         try {
             console.log('Chamando função EditarCliente');
-
+        
             const newData = {
                 id:idEditando,
-
+                nome:nomeEditando,
+                email:emailEditando,
+                cpf: cpfEditando,
+                dataEmissaoCpf:dataEmissaoCpfEditando,
+                estado: estadoEditando,
+                cidade:cidadeEditando,
+                bairro:bairroEditando,
+                rua:ruaEditando,
+                numero:numeroEditando,
+                cep:cepEditando,
+                complemento:complementoEditando,
             };
+            console.log('Teste Editar Cliente:',newData)
+            await axios.put('http://localhost:8080/cliente_editar', newData);
+            for (let telefone of telefoneEditando){
+                const newDataTelefone = {
+                    id: telefone.id,
+                    telefone: telefone.telefone,
+                }
+                console.log("todos os telefones:", newDataTelefone);
+                await axios.put('http://localhost:8080/telefone_editar', newDataTelefone);
+            }
 
-            await axios.put('http://localhost:8080/produtos_editar', newData);
+            for (let dado of RgsEditando) {
+                const newDataDadosRG = {
+                    id: dado.id,
+                    rgCliente: dado.rgCliente,
+                    ufRgCliente: dado.ufRgCliente,
+                    dataEmissaoRgCliente: dado.dataEmissaoRgCliente,
+                };
+                try {
+                    console.log("todos os Rgs:", newDataDadosRG);
+                    await axios.put('http://localhost:8080/rg_editar', newDataDadosRG);
+                } catch (error) {
+                    console.error('Erro ao cadastrar RG:', error);
+                }
+            }
+
+            //await axios.put('http://localhost:8080/produtos_editar', newData);
             console.log("Dados atualizados com sucesso!");
             fetchData()
             setEditando("")
@@ -94,13 +129,13 @@ function Clientes(){
         }
       };
 
-    async function AbrirModal(id,nome,nomeSocial,email,telefone,cpf,dataEmissaoCpf,dadosRgs,
+    async function AbrirModal(id,nome,nomeSocial,email,dadosTelefones,cpf,dataEmissaoCpf,dadosRgs,
         estado,cidade,bairro,rua,numero,cep,complemento){
         setIdEditando(id)
         setNomeEditando(nome)
         setNomeSocialEditando(nomeSocial)
         setEmailEditando(email)
-        setTelefoneEditando(telefone)
+        setTelefoneEditando(dadosTelefones)
         setCpfEditando(cpf)
         setDataEmissaoCpfEditando(dataEmissaoCpf)
         setRgsEditando(dadosRgs)
@@ -111,13 +146,16 @@ function Clientes(){
         setNumeroEditando(numero)
         setCepEditando(cep)
         setComplementoEditando(complemento)
-
+        console.log('dadosTelefones',telefoneEditando)
         setEditando("editando")
     }
 
     const handleChangeTelefone = (e, index) => {
-        telefoneEditando[index] = e.target.value;
-        setTelefoneEditando([...telefoneEditando]);
+        const { name, value } = e.target;
+        const updatedDadosTelefone = [...telefoneEditando];
+        updatedDadosTelefone[index][name] = value;
+        setTelefoneEditando([updatedDadosTelefone]);
+        console.log("alterando dados Telefone", updatedDadosTelefone)
     };
 
     
@@ -127,7 +165,7 @@ function Clientes(){
         updatedDadosRG[index][name] = value;
         setRgsEditando(updatedDadosRG);
         console.log("alterando dados RG", updatedDadosRG)
-    };    
+    }; 
 
     return(
         <div className='conteudoPagina'>
@@ -161,7 +199,7 @@ function Clientes(){
                                         aria-label="Nome Social do Cliente:" 
                                         aria-describedby="basic-addon1" 
                                         value={nomeSocialEditando}
-                                        onChange={(e) => setNomeEditando(e.target.value)}
+                                        onChange={(e) => setNomeSocialEditando(e.target.value)}
                                     />
                                 </div>
                                 <div className="input-cadastros">
@@ -177,7 +215,7 @@ function Clientes(){
                                     />
                                 </div>
                                 {telefoneEditando.map((t, index) => (//criar um componente para subistituir essa função
-                                    <div  key={index}>
+                                    <div  >
                                         <div className="input-cadastros">
                                             <label className="labelInput"><b>Telefone {index+1}:</b></label>
                                             <InputMask 
@@ -187,7 +225,8 @@ function Clientes(){
                                                 aria-label="Nome do Cliente" 
                                                 mask="(99) 99999-9999"
                                                 aria-describedby="basic-addon1" 
-                                                value={t}
+                                                name='telefone'
+                                                value={t.telefone}
                                                 onChange={(e) => handleChangeTelefone(e, index)}
                                             />
                                         </div>
@@ -287,13 +326,17 @@ function Clientes(){
                         ) : (
                                 chartClientes.length > 0 ? (
                                     chartClientes.map((cliente, index) => {
-                                    const telefones = chartDataTelefone
+                                    const dadosTelefones = chartDataTelefone
                                         .filter(t => t.idCliente === cliente.id)
-                                        .map(t => t.telefone);
+                                        .map(t => ({
+                                            id:t.id,
+                                            telefone:t.telefone
+                                        }));
 
                                     const dadosRgs = chartDataRg
                                         .filter(r => r.idCliente === cliente.id)
                                         .map(r => ({
+                                        id: r.id,
                                         rgCliente: r.rgCliente,
                                         ufRgCliente: r.ufRgCliente,
                                         dataEmissaoRgCliente: r.dataEmissaoRgCliente
@@ -304,7 +347,7 @@ function Clientes(){
                                         key={index} 
                                         id={cliente.id}
                                         nome={cliente.nome}
-                                        telefone={telefones}
+                                        dadosTelefones={dadosTelefones}
                                         nomeSocial={cliente.nomeSocial}
                                         email={cliente.email}
                                         cpf={cliente.cpf}

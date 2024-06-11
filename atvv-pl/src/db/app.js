@@ -290,18 +290,18 @@ app.get('/telefones', async (req, res) => {
     }
 });
 app.post('/rg_adicionar', async (req, res) => {
-    const newDataTelefone = req.body;
+    const newDataRg = req.body;
     try {
         const now = moment().format('YYYY-MM-DD');
-        newDataTelefone.createdAt = now;
-        newDataTelefone.updatedAt = now;
+        newDataRg.createdAt = now;
+        newDataRg.updatedAt = now;
         
-        await connection.query('INSERT INTO rg SET ?', newDataTelefone);
+        await connection.query('INSERT INTO rg SET ?', newDataRg);
         
-        res.status(200).send('Telefones cadastrado');
+        res.status(200).send('Rgs cadastrados');
     } catch (error) {
-        console.error('Erro ao adicionar o Telefones:', error);
-        res.status(500).send('Erro ao cadastrar Telefones');
+        console.error('Erro ao adicionar o Rgs:', error);
+        res.status(500).send('Erro ao cadastrar Rgs');
     }
 });
 
@@ -312,5 +312,40 @@ app.get('/rgs', async (req, res) => {
     } catch (error) {
         console.error('Erro ao buscar telefone:', error);
         res.status(500).send('Erro ao buscar telefones');
+    }
+});
+
+app.put('/rg_editar', async (req, res) => {
+    const data = req.body; 
+    try {
+        await connection.query('UPDATE rg SET rgCliente = ?, ufRgCliente = ?, dataEmissaoRgCliente = ? WHERE id = ?', [data.rgCliente, data.ufRgCliente, data.dataEmissaoRgCliente, data.id]);
+        res.status(200).send('Dados atualizados com sucesso');
+    }
+    catch (error) {
+      console.error('Erro ao atualizar os dados:', error);
+      res.status(500).send('Erro ao atualizar os dados');
+    }
+});
+app.put('/rg_editar', async (req, res) => {
+    const data = req.body; 
+    try {
+        await connection.query('UPDATE telefones SET telefone = ? WHERE id = ?', [data.telefone, data.id]);
+        res.status(200).send('Dados atualizados com sucesso');
+    }
+    catch (error) {
+      console.error('Erro ao atualizar os dados:', error);
+      res.status(500).send('Erro ao atualizar os dados');
+    }
+});
+app.put('/cliente_editar', async (req, res) => {
+    const data = req.body; 
+    try {
+        await connection.query('UPDATE clientes SET nome = ?, email = ?, cpf = ?, dataEmissaoCpf = ?, estado = ?, cidade = ?, bairro = ?, rua = ?, numero = ?, cep = ?, complemento = ? WHERE id = ?', 
+                            [data.nome,data.email,data.cpf,data.dataEmissaoCpf,data.estado,data.cidade,data.bairro,data.rua,data.numero,data.cep,data.complemento,data.id]);
+        res.status(200).send('Dados atualizados com sucesso');
+    }
+    catch (error) {
+      console.error('Erro ao atualizar os dados:', error);
+      res.status(500).send('Erro ao atualizar os dados');
     }
 });
