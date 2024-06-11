@@ -1,9 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
+import CampoObrigatorio from "../../components/layout/CampoObrigatorio";
 
 function CadastrarServico({setCadastrando}){
     const [nome, setNome] = useState('');
     const [valor, setValor] = useState('');
+
+    const [faltaValor, setFaltaValor] = useState('');
+    const [faltaNome, setFaltaNome] = useState('');
 
     async function CadastrarServico() {
         console.log("Cadastrar Pet");
@@ -22,10 +26,31 @@ function CadastrarServico({setCadastrando}){
 
     return(
         <div>
-            <form className="containerConteudo" onSubmit={(e) => { e.preventDefault(); CadastrarServico(); }}>
+            <form className="containerConteudo" onSubmit={(e) => { 
+                e.preventDefault(); 
+                if(nome && valor){
+                    CadastrarServico(); 
+                }  else {
+                        if(!nome){
+                            setFaltaNome(true)
+                        } else {
+                            setFaltaNome(false)
+                        }
+                        if(!valor){
+                            setFaltaValor(true)
+                        } else {
+                            setFaltaValor(false)
+                        }
+                        
+                    }
+                }}>
                 <h2 className="tituloCadastro">Dados do serviço:</h2>
                 <div className="input-cadastros">
-                    <label className="labelInput">Nome do serviço:</label>
+                    {!faltaNome ?(
+                        <label className="labelInput">Nome do serviço:</label>
+                    ) : (
+                        <label className="labelInput"><CampoObrigatorio/>Nome do serviço: </label>
+                    )}
                     <input 
                         type="text" 
                         className="form-control" 
@@ -38,7 +63,11 @@ function CadastrarServico({setCadastrando}){
                 </div>
 
                 <div className="input-cadastros">
-                    <label className="labelInput">Valor do serviço:</label>
+                    {!faltaValor ?(
+                        <label className="labelInput">Valor do serviço:</label>
+                    ) : (
+                        <label className="labelInput"><CampoObrigatorio/>Valor do serviço: </label>
+                    )}
                     <input 
                         type="text" 
                         className="form-control" 

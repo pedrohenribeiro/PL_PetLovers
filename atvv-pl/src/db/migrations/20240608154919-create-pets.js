@@ -21,7 +21,10 @@ module.exports = {
       genero: {
         type: Sequelize.STRING
       },
-      dono: {
+      nomeDono: {
+        type: Sequelize.STRING
+      },
+      cpfDono: {
         type: Sequelize.STRING
       },
       createdAt: {

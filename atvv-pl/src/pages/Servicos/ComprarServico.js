@@ -132,7 +132,7 @@ function ComprarServico({setComprando}){
                     
                       <select value={cliente} onChange={(event) => {
                         setCliente(event.target.value); 
-                        setCpfCliente(event.target.selectedOptions[0].getAttribute("data-cpf")); // Define o CPF do vendedor
+                        setCpfCliente(event.target.selectedOptions[0].getAttribute("data-cpf"));
                       }}>
                         <option value="">Selecione um cliente</option>
                         {chartClientes.map((cliente) => (

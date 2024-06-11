@@ -6,11 +6,15 @@ import { IoIosRemoveCircleOutline } from "react-icons/io";
 function CardServico({numero,nome,valor,deletarServico,abrirModal}){
     return(
         <div className={styles.cardList}> 
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
             <div className={styles.cardId}>
                 <p className={styles.cardIdConteudo}>{numero}</p>            
             </div> 
             <div className={styles.cardTitulo}>            
-                <p>{nome}</p>
+                <h3>{nome}</h3>
             </div>
             <div className={styles.cardConteudo}>                 
                 <p>Valor: R${valor}</p>

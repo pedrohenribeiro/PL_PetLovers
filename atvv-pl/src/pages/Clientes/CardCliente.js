@@ -4,8 +4,7 @@ import { FiEdit } from "react-icons/fi";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 import React, { useState, useEffect } from 'react';
 
-function CardCliente({id,nome,nomeSocial,email,telefone,cpf,dataEmissaoCpf,Rg,ufRg,
-    dataEmissaoRg,estado,cidade,bairro,rua,numero,cep,complemento,
+function CardCliente({id,nome,nomeSocial,email,telefone,cpf,dataEmissaoCpf,dadosRgs,estado,cidade,bairro,rua,numero,cep,complemento,
     DeletarCliente,AbrirModal
     }){
 
@@ -17,7 +16,10 @@ function CardCliente({id,nome,nomeSocial,email,telefone,cpf,dataEmissaoCpf,Rg,uf
 
     return(
         <div className={`${styles.cardList} ${ativo ? styles.active : ''}`}> 
-            
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
             <div className={styles.cardId}>
                 <p className={styles.cardIdConteudo}>{id}</p>            
             </div> 
@@ -28,16 +30,18 @@ function CardCliente({id,nome,nomeSocial,email,telefone,cpf,dataEmissaoCpf,Rg,uf
 
             <div className={styles.conteudo}>
                 <div className={styles.cardConteudo}>                 
-                    <b>Nome Social: </b>
-                    <p className={styles.informacoes}> {nomeSocial}</p>
-                </div>
-                <div className={styles.cardConteudo}>                 
-                    <b>Email: </b>
+                    <b>Email:</b>
                     <p className={styles.informacoes}> {email}</p>
                 </div>
+                {telefone.map((t, index) => (//criar um componente para subistituir essa função
+                    <div className={styles.cardConteudo} key={index}>  
+                            <b>Telefone: {index+1}</b>
+                            <p className={styles.informacoes}>{t}</p>
+                    </div>
+                ))}
                 <div className={styles.cardConteudo}>                 
-                    <b>Telefone:</b>
-                    <p className={styles.informacoes}> {telefone}</p>
+                    <b>Nome Social: </b>
+                    <p className={styles.informacoes}> {nomeSocial}</p>
                 </div>
                 <div className={styles.cardConteudo}>                 
                     <b>CPf:</b>
@@ -47,19 +51,35 @@ function CardCliente({id,nome,nomeSocial,email,telefone,cpf,dataEmissaoCpf,Rg,uf
                     <b>Data de Emissao CPf:</b>
                     <p className={styles.informacoes}> {dataEmissaoCpf}</p>
                 </div>
-                <div className={styles.cardConteudo}>                 
-                    <b>RG:</b>
-                    <p className={styles.informacoes}> {Rg}</p>
-                    
-                </div>
-                <div className={styles.cardConteudo}>                 
-                    <b>UF-RG:</b>
-                    <p className={styles.informacoes}> {ufRg}</p>
-                </div>
-                <div className={styles.cardConteudo}>                 
-                    <b>Data de Emissao RG: </b>
-                    <p className={styles.informacoes}> {dataEmissaoRg}</p>
-                </div>
+                {/* criar um componente para subistituir essa função */}
+
+                {dadosRgs.map((dados, index) => (
+                    <div key={index}>
+                        <div className={styles.cardConteudo}>  
+                            <b>Rg {index+1}: </b>
+                            <p className={styles.informacoes}>{dados.rgCliente}</p>
+                        </div> 
+                        <div className={styles.cardConteudo}>  
+                            <b>UF-RG {index+1}: </b>
+                            <p className={styles.informacoes}>{dados.ufRgCliente}</p>
+                        </div> 
+          
+                        {index === dadosRgs.length - 1 ? (
+                            <div className={styles.cardConteudo}>  
+                                <b>Data de Emissao RG {index+1}: </b>
+                                <p className={styles.informacoes}>{dados.dataEmissaoRgCliente}</p>
+                            </div> 
+                        ) : (
+                            <div className={styles.cardConteudo}>  
+                                <b className={styles.informacoesUltima}>Data de Emissao RG {index+1}: </b>
+                                <p className={styles.informacoes}>{dados.dataEmissaoRgCliente}</p>
+                            </div> 
+                        )}
+                    </div> 
+                ))}
+                
+            
+
                 <div className={styles.cardConteudo}>                 
                     <b>Estado: </b>
                     <p className={styles.informacoes}> {estado}</p>
@@ -77,7 +97,7 @@ function CardCliente({id,nome,nomeSocial,email,telefone,cpf,dataEmissaoCpf,Rg,uf
                     <p className={styles.informacoes}> {rua}</p>
                 </div>
                 <div className={styles.cardConteudo}>                 
-                    <p>Numero: </p>
+                    <b>Numero: </b>
                     <p className={styles.informacoes}> {numero}</p>
                 </div>
                 <div className={styles.cardConteudo}>                 
@@ -98,7 +118,7 @@ function CardCliente({id,nome,nomeSocial,email,telefone,cpf,dataEmissaoCpf,Rg,uf
                         <FiEdit 
                             size={28} 
                             title="Editar"
-                            onClick={(e) => AbrirModal(id)}
+                            onClick={(e) => AbrirModal(id,nome,nomeSocial,email,telefone,cpf,dataEmissaoCpf,dadosRgs,estado,cidade,bairro,rua,numero,cep,complemento)}
                             />
                     </button>
                     <button className='botao-deletar'>
@@ -129,9 +149,6 @@ CardCliente.propTypes = {
     email: PropTypes.string.isRequired,
     telefone: PropTypes.number.isRequired,
     dataEmissaoCpf: PropTypes.number.isRequired,
-    Rg: PropTypes.number.isRequired,
-    ufRg: PropTypes.string.isRequired,
-    dataEmissaoRg: PropTypes.number.isRequired,
     estado: PropTypes.string.isRequired,
     cidade: PropTypes.string.isRequired,
     bairro: PropTypes.string.isRequired,
@@ -148,8 +165,6 @@ CardCliente.defaultProps = {
     email: 'Sem email',
     telefone: 'Sem telefone',
     dataEmissaoCpf: 'Sem data emissao CPF',
-    Rg: 0,
-    ufRg: 'Sem UF RG',
     dataEmissaoRg: 0,
     estado: 'Sem estado',
     cidade: 'Sem cidade',

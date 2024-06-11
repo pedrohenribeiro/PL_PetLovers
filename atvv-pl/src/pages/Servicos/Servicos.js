@@ -11,6 +11,7 @@ function Servicos(){
     const [nomeEditando, setNomeEditando] = useState("");
     const [valorEditando, setValorEditando] = useState("");
 
+    const [carregando, setCarregando] = useState(true);
     useEffect(() => {
         fetchData();
     }, []);
@@ -23,8 +24,10 @@ function Servicos(){
             const processedData = dataServico.map((itemServico) => ({
                 ...itemServico
             }));
-            setItemServico(processedData); // Armazena os dados no estado
+            setItemServico(processedData);
             console.log(processedData);
+
+            setCarregando(false);
         } catch (error) {
             console.error("Erro ao buscar dados:", error);
         }
@@ -68,59 +71,66 @@ function Servicos(){
     }
 
     return(
-        <div className="conjuntoCard">
-            {editando === "editando" && (
-                <div>
-                    <form className="containerConteudo" onSubmit={(e) => { e.preventDefault(); EditarServico(); }}>
-                        <h2 className="tituloCadastro">Dados do serviço {idEditando}:</h2>
-                        <div className="input-cadastros">
-                            <label className="labelInput">Nome do serviço:</label>
-                            <input 
-                                type="text" 
-                                className="form-control" 
-                                placeholder="Nome do serviço" 
-                                aria-label="Nome do serviço" 
-                                aria-describedby="basic-addon1" 
-                                value={nomeEditando}
-                                onChange={(e) => setNomeEditando(e.target.value)}
-                            />
-                        </div>
-                        <div className="input-cadastros">
-                            <label className="labelInput">Valor do serviço:</label>
-                            <input 
-                                type="text" 
-                                className="form-control" 
-                                placeholder="Valor do serviço" 
-                                aria-label="Valor do serviço" 
-                                aria-describedby="basic-addon1" 
-                                value={valorEditando}
-                                onChange={(e) => setValorEditando(e.target.value)}
-                            />
-                        </div>
-                        <div className="form-botoes">
-                            <button className="botaoCadastro" type="button" onClick={() => setEditando("")}>Voltar</button>
-                            <button className="botaoCadastro" type="submit">Editar</button>
-                        </div>
-                    </form>
-                </div>
-            )}
-            
-            {editando !== "editando" && (
-                itemServico.length > 0 ? (
-                    itemServico.map((servico, index) => (
-                        <CardServico 
-                            key={index} 
-                            numero={servico.id}
-                            nome={servico.nome} 
-                            valor={servico.valor}
-                            deletarServico={deletarServico}
-                            abrirModal={abrirModal}
-                        />
-                    ))
-                ) : (
-                    <SemDados titulo="Serviço" />
-                )
-            )}
+        <div className='conteudoPagina'>
+            <h1 className='tituloConteudoPagina'>Dados de Serviços</h1>
+            <div className="conjuntoCard">
+                {editando === "editando" && (
+                    <div>
+                        <form className="containerConteudo" onSubmit={(e) => { e.preventDefault(); EditarServico(); }}>
+                            <h2 className="tituloCadastro">Dados do serviço {idEditando}:</h2>
+                            <div className="input-cadastros">
+                                <label className="labelInput">Nome do serviço:</label>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    placeholder="Nome do serviço" 
+                                    aria-label="Nome do serviço" 
+                                    aria-describedby="basic-addon1" 
+                                    value={nomeEditando}
+                                    onChange={(e) => setNomeEditando(e.target.value)}
+                                />
+                            </div>
+                            <div className="input-cadastros">
+                                <label className="labelInput">Valor do serviço:</label>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    placeholder="Valor do serviço" 
+                                    aria-label="Valor do serviço" 
+                                    aria-describedby="basic-addon1" 
+                                    value={valorEditando}
+                                    onChange={(e) => setValorEditando(e.target.value)}
+                                />
+                            </div>
+                            <div className="form-botoes">
+                                <button className="botaoCadastro" type="button" onClick={() => setEditando("")}>Voltar</button>
+                                <button className="botaoCadastro" type="submit">Editar</button>
+                            </div>
+                        </form>
+                    </div>
+                )}
+                
+                {editando !== "editando" && (
+                    carregando ? (
+                        <div></div>
+                    ) : (
+                        itemServico.length > 0 ? (
+                            itemServico.map((servico, index) => (
+                                <CardServico 
+                                    key={index} 
+                                    numero={servico.id}
+                                    nome={servico.nome} 
+                                    valor={servico.valor}
+                                    deletarServico={deletarServico}
+                                    abrirModal={abrirModal}
+                                />
+                            ))
+                        ) : (
+                            <SemDados titulo="Serviço" />
+                        )
+                    )
+                )}
+            </div>
         </div>
     )
 }

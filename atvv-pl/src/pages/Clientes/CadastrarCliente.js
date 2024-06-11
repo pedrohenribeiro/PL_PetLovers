@@ -1,15 +1,17 @@
 import InputMask from "react-input-mask";
 import axios from "axios";
 import { useState } from 'react';
+import { IoIosRemoveCircleOutline } from "react-icons/io";
 
 function CadastrarCliente({setCadastrando}){
     const [nomeCompleto, setNomeCompleto] = useState('');
     const [nomeSocial, setNomeSocial] = useState('');
     const [email, setEmail] = useState('');  
-    const [telefone, setTelefone] = useState('');   
-
+    const [telefones, setTelefones] = useState([]); 
+    
     const [cpf, setCpf] = useState('');
     const [dataEmissaoCpf, setDataEmissaoCpf] = useState('');
+    const [dadosRG, setDadosRG] = useState([{ rgCliente: '', ufRgCliente: '', dataEmissaoRgCliente: '' }]);
     const [rg, setRg] = useState('');
     const [dataEmissaoRg, setDataEmissaoRg] = useState('');
     const [UfRg, setUfRg] = useState('');
@@ -29,12 +31,8 @@ function CadastrarCliente({setCadastrando}){
                 nome: nomeCompleto,
                 nomeSocial: nomeSocial,
                 email: email,
-                telefone: telefone,
                 cpf: cpf,
                 dataEmissaoCpf: dataEmissaoCpf,
-                Rg: rg,
-                ufRg: UfRg,
-                dataEmissaoRg: dataEmissaoRg,
                 estado: estado,
                 cidade: cidade,
                 bairro: bairro,
@@ -45,11 +43,73 @@ function CadastrarCliente({setCadastrando}){
             };
             console.log("Adicionando Cliente", newData);
             await axios.post('http://localhost:8080/clientes_adicionar', newData);
+
+            //modificar
+            const responseCliente = await axios.get("http://localhost:8080/clientes");
+            const dataCliente = responseCliente.data;
+
+            let idCliente = dataCliente.length;
+            console.log(dataCliente.length)
+
+            for (let telefone of telefones){
+                const newDataTelefone = {
+                    idCliente: idCliente,
+                    telefone: telefone,
+                }
+                await axios.post('http://localhost:8080/telefone_adicionar', newDataTelefone);
+            }
+
+            for (let dado of dadosRG) {
+                const newDataDadosRG = {
+                    idCliente: idCliente,
+                    rgCliente: dado.rgCliente,
+                    ufRgCliente: dado.ufRgCliente,
+                    dataEmissaoRgCliente: dado.dataEmissaoRgCliente,
+                };
+                try {
+                    await axios.post('http://localhost:8080/rg_adicionar', newDataDadosRG);
+                } catch (error) {
+                    console.error('Erro ao cadastrar RG:', error);
+                }
+            }
+
             setCadastrando("");
         } catch (error) {
             console.error("Erro ao adicionar pet:", error);
         }
     };
+    const adicionarTelefone = (e) => {
+        e.preventDefault();
+        setTelefones([...telefones, ""]);
+    };
+
+     const handleChangeTelefone = (e, index) => {
+        telefones[index] = e.target.value;
+        setTelefones([...telefones]);
+    };
+    
+    const removerTelefone = (position) => {
+        setTelefones([...telefones.filter((_, index)=> index !== position)]);
+    }; 
+
+    const adicionarDadosRgs = (e) => {
+        e.preventDefault();
+        setDadosRG([...dadosRG, { rgCliente: '', ufRgCliente: '', dataEmissaoRgCliente: '' }]);
+    };    
+
+    const atualizarDadosRgs = (e, index) => {
+        const { name, value } = e.target;
+        const updatedDadosRG = [...dadosRG];
+        updatedDadosRG[index][name] = value;
+        setDadosRG(updatedDadosRG);
+    };    
+    
+    const removerDadosRgs = (index) => {
+        index = 1;
+        const updatedDadosRG = dadosRG.filter((_, i) => i !== index);
+        setDadosRG(updatedDadosRG);
+    }; 
+
     
     return(
         <div>
@@ -94,9 +154,11 @@ function CadastrarCliente({setCadastrando}){
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
+
                         <div className="input-cadastros">
                             <label className="labelInput" htmlFor="Telefone">Telefone:</label>
-                            <InputMask
+
+{/*                             <InputMask
                                 type="text"
                                 className="form-control"
                                 placeholder="(00) 00000-0000"
@@ -104,7 +166,35 @@ function CadastrarCliente({setCadastrando}){
                                 mask="(99) 99999-9999"  
                                 value={telefone}
                                 onChange={event => setTelefone(event.target.value)}
-                            />
+                            /> */}
+                            <div className="field">
+                                <button type="button" onClick={adicionarTelefone}>
+                                    Adicionar Telefone
+                                </button> 
+                            </div>
+                            {
+                            telefones.map((telefone, index) => (
+                                <div className="field" key={index}>
+                                    <label for={`telefone-${index+1}`}>{`Telefone ${index+1}:`}</label>
+                                    <div className="telefone">
+                                        <InputMask
+                                            type="text"
+                                            mask="(99) 99999-9999"
+                                            id={`telefone-${index+1}`}
+                                            placeholder="(00) 00000-0000"
+                                            value={telefone}
+                                            onChange={(e) => handleChangeTelefone(e, index)}
+                                        />
+                                        <button type="button" class="botao-deletar" onClick={() => {removerTelefone(index)}}>
+                                            <IoIosRemoveCircleOutline 
+                                                size={30} 
+                                                title="Apagar"
+                                            />
+                                        </button>
+                                    </div>
+                                </div>
+                            ))
+                        } 
                         </div>
                     </div>
 
@@ -134,46 +224,56 @@ function CadastrarCliente({setCadastrando}){
                                 onChange={event => setDataEmissaoCpf(event.target.value)}
                             />
                         </div>
-                        <div className="input-cadastros">
-                            <div className="rg">
-                                <div className="camposRG">
-                                    <label className="labelInput" htmlFor="RG">RG:</label>
-                                    <InputMask
+                        <div className="field">
+                                <button type="button" class="btn btn-light" onClick={adicionarDadosRgs}> Adicionar Dados do(s) RG(s)</button>           
+                        </div>
+                        
+                        {dadosRG.map((item, index) => (
+                            <div className="input-cadastros" key={index}>
+                                <div className="rg">
+                                    <div className="camposRG">
+                                        <label className="labelInput" htmlFor="RG">RG:</label>
+                                        <InputMask
                                         id="RG"
                                         mask="99.999.999-9"
                                         placeholder="00.000.000-0"
-                                        value={rg}
-                                        onChange={event => setRg(event.target.value)}
+                                        name="rgCliente"
+                                        value={item.rgCliente}
+                                        onChange={(e) => atualizarDadosRgs(e, index)}
                                         type="text"
-                                    />
-                                </div>
-                                <div  className="camposRG">
-                                    <label className="labelInput" htmlFor="RG">UF do RG:</label>
-                                    <input 
+                                        />
+                                    </div>
+                                    <div className="camposRG">
+                                        <label className="labelInput" htmlFor="RG">UF do RG:</label>
+                                        <input
                                         id="ufRG"
-                                        type="text" 
-                                        className="form-control" 
-                                        placeholder="UF do RG" 
-                                        aria-label="E-mail" 
-                                        aria-describedby="basic-addon1" 
-                                        value={UfRg}
-                                        onChange={(e) => setUfRg(e.target.value)}
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="UF do RG"
+                                        aria-label="E-mail"
+                                        aria-describedby="basic-addon1"
+                                        name="ufRgCliente"
+                                        value={item.ufRgCliente}
+                                        onChange={(e) => atualizarDadosRgs(e, index)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="input-cadastros">
+                                    <label className="labelInput" htmlFor="Data de emissão do RG">Data de Emissao do RG:</label>
+                                    <InputMask
+                                        id="dataEmissaoRG"
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="__/__/____"
+                                        mask="99/99/9999"
+                                        name="dataEmissaoRgCliente"
+                                        value={item.dataEmissaoRgCliente}
+                                        onChange={(e) => atualizarDadosRgs(e, index)}
                                     />
                                 </div>
-                            </div>    
-                        </div>
-                        <div className="input-cadastros">
-                            <label className="labelInput" htmlFor="Data de emissão do RG">Data de Emissao do RG:</label>
-                            <InputMask
-                                id="dataEmissaoRG"
-                                type="text" 
-                                className="form-control" 
-                                placeholder="__/__/____"
-                                mask="99/99/9999"
-                                value={dataEmissaoRg}
-                                onChange={event => setDataEmissaoRg(event.target.value)}
-                            />
-                        </div>
+                            </div>
+                            ))}
+
 
                     </div>
                 </div>
@@ -213,13 +313,13 @@ function CadastrarCliente({setCadastrando}){
                     </div>
                     <div className="segundo">   
                         <div className="input-cadastros">
-                                <label className="labelInput" htmlFor="bairro">bairro:</label>
+                                <label className="labelInput" htmlFor="bairro">Bairro:</label>
                                 <input 
                                     id="bairro" 
                                     type="text" 
                                     className="form-control" 
                                     placeholder="Bairro" 
-                                    aria-label="bairro" 
+                                    aria-label="Bairro" 
                                     aria-describedby="basic-addon1" 
                                     value={bairro}
                                     onChange={(e) => setBairro(e.target.value)}
@@ -252,7 +352,7 @@ function CadastrarCliente({setCadastrando}){
                     </div>  
                     <div className="terceiro">
                         <div className="input-cadastros">
-                            <label className="labelInput" htmlFor="codigoPostal">Codigo Postal:</label>
+                            <label className="labelInput" htmlFor="codigoPostal">Código Postal:</label>
                             <input 
                                 type="text" 
                                 className="form-control" 

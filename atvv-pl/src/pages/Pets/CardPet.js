@@ -3,27 +3,39 @@ import styles from './CardPet.module.css'
 import { FiEdit } from "react-icons/fi";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 
-function CardPet({numero,nome,tipo,raca,genero,dono,DeletarPet,AbrirModal}){
+function CardPet({numero,nome,tipo,raca,genero,nomeDono,cpfDono,DeletarPet,AbrirModal}){
     return(
         <div className={styles.cardList}> 
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
             <div className={styles.cardId}>
                 <p className={styles.cardIdConteudo}>{numero}</p>            
             </div> 
             <div className={styles.cardTitulo}>            
-                <p>{nome}</p>
+                <h3>{nome}</h3>
             </div>
                 <div>
                 <div className={styles.cardConteudo}>                 
-                    <p>Tipo: {tipo}</p>
+                    <b>Tipo:</b>
+                    <p className={styles.informacoes}> {tipo}</p>
                 </div>
                 <div className={styles.cardConteudo}>                 
-                    <p>Raça: {raca}</p>
+                    <b>Raça:</b>
+                    <p className={styles.informacoes}> {raca}</p>
                 </div>
                 <div className={styles.cardConteudo}>                 
-                    <p>Genero: {genero}</p>
+                    <b>Genero:</b>
+                    <p className={styles.informacoes}> {genero}</p>
                 </div>
                 <div className={styles.cardConteudo}>                 
-                    <p>Dono: {dono}</p>
+                    <b>Dono:</b>
+                    <p className={styles.informacoes}> {nomeDono}</p>
+                </div>
+                <div className={styles.cardConteudo}>                 
+                    <b>CPF:</b>
+                    <p className={styles.informacoes}> {cpfDono}</p>
                 </div>
             </div>
 
@@ -33,7 +45,7 @@ function CardPet({numero,nome,tipo,raca,genero,dono,DeletarPet,AbrirModal}){
                     <FiEdit 
                         size={28} 
                         title="Editar"
-                        onClick={(e) => AbrirModal(numero,nome,tipo,raca,genero,dono)}
+                        onClick={(e) => AbrirModal(numero,nome,tipo,raca,genero,nomeDono,cpfDono)}
                         />
                 </button>
 

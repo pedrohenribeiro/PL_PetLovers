@@ -111,12 +111,25 @@ app.post('/comprar', async (req, res) => {
 app.get('/clientes', async (req, res) => {
     try {
 
-        const [rows, fields] = await connection.query('SELECT id, nome, cpf from clientes');
+        const [rows, fields] = await connection.query('SELECT * from clientes');
         res.json(rows);
 
     } catch (error) {
         console.error('Erro ao buscar produtos:', error);
         res.status(500).send('Erro ao buscar produtos');
+    }
+});
+
+app.delete('/clientes/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+      
+      await connection.query('DELETE FROM clientes WHERE id = ?', [id]);
+      res.status(200).send('Cliente deletado com sucesso');
+
+    } catch (error) {
+      console.error('Erro ao apagar Cliente:', error);
+      res.status(500).send('Erro ao apagar Cliente');
     }
 });
 
@@ -202,7 +215,7 @@ app.put('/produtos_editar', async (req, res) => {
 app.get('/pets', async (req, res) => {
     try {
 
-        const [rows, fields] = await connection.query('SELECT id, nome, tipo, raca, genero, dono from pets');
+        const [rows, fields] = await connection.query('SELECT id, nome, tipo, raca, genero, nomeDono, cpfDono from pets');
         res.json(rows);
 
     } catch (error) {
@@ -227,7 +240,7 @@ app.delete('/pets/:id', async (req, res) => {
 app.put('/pets_editar', async (req, res) => {
     const data = req.body; 
     try {
-        await connection.query('UPDATE pets SET nome = ?, tipo = ?, raca = ?, genero = ?, dono = ? WHERE id = ?', [data.nome, data.tipo, data.raca, data.genero, data.dono, data.id]);
+        await connection.query('UPDATE pets SET nome = ?, tipo = ?, raca = ?, genero = ?, nomeDono = ?, cpfDono = ? WHERE id = ?', [data.nome, data.tipo, data.raca, data.genero, data.nomeDono,data.cpfDono, data.id]);
         res.status(200).send('Dados atualizados com sucesso');
     }
     catch (error) {
@@ -238,4 +251,66 @@ app.put('/pets_editar', async (req, res) => {
 
 app.listen(8080, () => {
     console.log("Servidor iniciado na porta 8080: http://localhost:8080");
+});
+
+
+
+
+
+
+
+
+
+
+
+
+app.post('/telefone_adicionar', async (req, res) => {
+    const newDataTelefone = req.body;
+    try {
+        const now = moment().format('YYYY-MM-DD');
+        newDataTelefone.createdAt = now;
+        newDataTelefone.updatedAt = now;
+        
+        await connection.query('INSERT INTO telefones SET ?', newDataTelefone);
+        
+        res.status(200).send('Telefones cadastrado');
+    } catch (error) {
+        console.error('Erro ao adicionar o Telefones:', error);
+        res.status(500).send('Erro ao cadastrar Telefones');
+    }
+});
+
+app.get('/telefones', async (req, res) => {
+    try {
+        const [rows, fields] = await connection.query('SELECT id, idCliente, telefone from telefones');
+        res.json(rows);
+    } catch (error) {
+        console.error('Erro ao buscar telefone:', error);
+        res.status(500).send('Erro ao buscar telefones');
+    }
+});
+app.post('/rg_adicionar', async (req, res) => {
+    const newDataTelefone = req.body;
+    try {
+        const now = moment().format('YYYY-MM-DD');
+        newDataTelefone.createdAt = now;
+        newDataTelefone.updatedAt = now;
+        
+        await connection.query('INSERT INTO rg SET ?', newDataTelefone);
+        
+        res.status(200).send('Telefones cadastrado');
+    } catch (error) {
+        console.error('Erro ao adicionar o Telefones:', error);
+        res.status(500).send('Erro ao cadastrar Telefones');
+    }
+});
+
+app.get('/rgs', async (req, res) => {
+    try {
+        const [rows, fields] = await connection.query('SELECT * from rg');
+        res.json(rows);
+    } catch (error) {
+        console.error('Erro ao buscar telefone:', error);
+        res.status(500).send('Erro ao buscar telefones');
+    }
 });

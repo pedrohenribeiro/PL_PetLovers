@@ -15,4 +15,11 @@ npx sequelize-cli model:generate --name pets --attributes nome:string,tipo:strin
 Vendas
 npx sequelize-cli model:generate --name vendas --attributes cpf:string,produtoServico:string,quantidade:string,valor:string,tipo:string
 
+Telefones
+npx sequelize-cli model:generate --name telefones --attributes telefone:string,idCliente:integer
+
+RGs
+npx sequelize-cli model:generate --name rg --attributes rgCliente:string,ufRgCliente:string,dataEmissaoRgCliente:string,idCliente:integer
+
+
 npx sequelize-cli db:migrate

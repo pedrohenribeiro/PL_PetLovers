@@ -230,3 +230,13 @@ html, body, #root {
 .campoObrigatorio{
   color: red;
 }
+.conteudoPagina h1{
+  justify-content: center;
+  text-align: center;
+}
+.tituloConteudoPagina{
+  margin-bottom: 20px;
+}
+.telefone input{
+  width: 260px !important;
+}

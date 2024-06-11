@@ -15,7 +15,16 @@
     position: relative;
     overflow: hidden;
 }
-
+.cardList::before{
+    transition: 0.5s;
+    content: '';
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    border: 20px solid transparent;
+    border-top: 20px solid #435edac7;
+    border-right: 20px solid #435edac7;
+}
 .cardList:hover{
     transition: 0.4s;
     transform: translateY(-10px);

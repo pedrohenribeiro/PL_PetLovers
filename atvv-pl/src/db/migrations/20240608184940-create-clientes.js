@@ -18,22 +18,10 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
-      telefone: {
-        type: Sequelize.STRING
-      },
       cpf: {
         type: Sequelize.STRING
       },
       dataEmissaoCpf: {
-        type: Sequelize.STRING
-      },
-      Rg: {
-        type: Sequelize.STRING
-      },
-      ufRg: {
-        type: Sequelize.STRING
-      },
-      dataEmissaoRg: {
         type: Sequelize.STRING
       },
       estado: {

@@ -10,6 +10,7 @@ function Produtos(){
     const [nomeEditando, setNomeEditando] = useState("");
     const [valorEditando, setValorEditando] = useState("");
 
+    const [carregando, setCarregando] = useState(true);
     useEffect(() => {
         fetchData();
     }, []);
@@ -22,8 +23,10 @@ function Produtos(){
             const processedData = dataProduto.map((itemProduto) => ({
                 ...itemProduto
             }));
-            setItemProduto(processedData); // Armazena os dados no estado
+            setItemProduto(processedData);
             console.log(processedData);
+
+            setCarregando(false);
         } catch (error) {
             console.error("Erro ao buscar dados:", error);
         }
@@ -67,58 +70,65 @@ function Produtos(){
     }
     
     return(
-        <div className="conjuntoCard">
-            {editando === "editando" && (
-                <div>
-                    <form className="containerConteudo" onSubmit={(e) => { e.preventDefault(); EditarProduto(); }}>
-                        <h2 className="tituloCadastro">Dados do produto {idEditando}:</h2>
-                        <div className="input-cadastros">
-                            <label className="labelInput">Nome do produto:</label>
-                            <input 
-                                type="text" 
-                                className="form-control" 
-                                placeholder="Nome do produto" 
-                                aria-label="Nome do produto" 
-                                aria-describedby="basic-addon1" 
-                                value={nomeEditando}
-                                onChange={(e) => setNomeEditando(e.target.value)}
-                            />
-                        </div>
-                        <div className="input-cadastros">
-                            <label className="labelInput">Valor do produto:</label>
-                            <input 
-                                type="text" 
-                                className="form-control" 
-                                placeholder="Valor do produto" 
-                                aria-label="Valor do produto" 
-                                aria-describedby="basic-addon1" 
-                                value={valorEditando}
-                                onChange={(e) => setValorEditando(e.target.value)}
-                            />
-                        </div>
-                        <div className="form-botoes">
-                            <button className="botaoCadastro" type="button" onClick={() => setEditando("")}>Voltar</button>
-                            <button className="botaoCadastro" type="submit">Editar</button>
-                        </div>
-                    </form>
-                </div>
-            )}
-            {editando !== "editando" && (
-                itemProduto.length > 0 ? (
-                    itemProduto.map((produto, index) => (
-                        <CardProduto 
-                            key={index} 
-                            numero={produto.id}
-                            nome={produto.nome} 
-                            valor={produto.valor}
-                            deletarProduto={deletarProduto}
-                            abrirModal={abrirModal}
-                        />
-                    ))
-                ) : (
-                    <SemDados titulo="Produto" />
-                )
-            )}
+        <div className='conteudoPagina'>
+            <h1 className='tituloConteudoPagina'>Dados de Produtos</h1>
+            <div className="conjuntoCard">
+                {editando === "editando" && (
+                    <div>
+                        <form className="containerConteudo" onSubmit={(e) => { e.preventDefault(); EditarProduto(); }}>
+                            <h2 className="tituloCadastro">Dados do produto {idEditando}:</h2>
+                            <div className="input-cadastros">
+                                <label className="labelInput">Nome do produto:</label>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    placeholder="Nome do produto" 
+                                    aria-label="Nome do produto" 
+                                    aria-describedby="basic-addon1" 
+                                    value={nomeEditando}
+                                    onChange={(e) => setNomeEditando(e.target.value)}
+                                />
+                            </div>
+                            <div className="input-cadastros">
+                                <label className="labelInput">Valor do produto:</label>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    placeholder="Valor do produto" 
+                                    aria-label="Valor do produto" 
+                                    aria-describedby="basic-addon1" 
+                                    value={valorEditando}
+                                    onChange={(e) => setValorEditando(e.target.value)}
+                                />
+                            </div>
+                            <div className="form-botoes">
+                                <button className="botaoCadastro" type="button" onClick={() => setEditando("")}>Voltar</button>
+                                <button className="botaoCadastro" type="submit">Editar</button>
+                            </div>
+                        </form>
+                    </div>
+                )}
+                {editando !== "editando" && (
+                    carregando ? (
+                        <div></div>
+                    ) : (
+                        itemProduto.length > 0 ? (
+                            itemProduto.map((produto, index) => (
+                                <CardProduto 
+                                    key={index} 
+                                    numero={produto.id}
+                                    nome={produto.nome} 
+                                    valor={produto.valor}
+                                    deletarProduto={deletarProduto}
+                                    abrirModal={abrirModal}
+                                />
+                            ))
+                        ) : (
+                            <SemDados titulo="Produto" />
+                        )
+                    )
+                )}
+            </div>
         </div>
     )
 }

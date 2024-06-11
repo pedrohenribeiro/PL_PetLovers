@@ -1,11 +1,15 @@
 import { useState } from "react";
 import axios from "axios";
+import CampoObrigatorio from "../../components/layout/CampoObrigatorio";
 
 function CadastrarProduto({setCadastrando}){
     const [nome, setNome] = useState('');
     const [valor, setValor] = useState('');
 
-    async function cadastrarProduto() {
+    const [faltaValor, setFaltaValor] = useState('');
+    const [faltaNome, setFaltaNome] = useState('');
+
+    async function CadastrarProduto() {
         console.log("Comprar Produto");
         try {
             const newData = {
@@ -22,11 +26,32 @@ function CadastrarProduto({setCadastrando}){
     
     return(
         <div>
-            <form className="containerConteudo" onSubmit={(e) => { e.preventDefault(); cadastrarProduto(); }}>
+            <form className="containerConteudo" onSubmit={(e) => { 
+                e.preventDefault(); 
+                if(nome && valor){
+                    CadastrarProduto(); 
+                }  else {
+                        if(!nome){
+                            setFaltaNome(true)
+                        } else {
+                            setFaltaNome(false)
+                        }
+                        if(!valor){
+                            setFaltaValor(true)
+                        } else {
+                            setFaltaValor(false)
+                        }
+                        
+                    }
+                }}>
                 <h2 className="tituloCadastro">Dados do produto:</h2>
 
                 <div className="input-cadastros">
-                    <label className="labelInput">Nome do produto:</label>
+                    {!faltaNome ?(
+                        <label className="labelInput">Nome do Produto:</label>
+                    ) : (
+                        <label className="labelInput"><CampoObrigatorio/>Nome do Produto: </label>
+                    )}
                     <input 
                         type="text" 
                         className="form-control" 
@@ -39,7 +64,11 @@ function CadastrarProduto({setCadastrando}){
                 </div>
 
                 <div className="input-cadastros">
-                    <label className="labelInput">Valor do produto:</label>
+                    {!faltaValor ?(
+                        <label className="labelInput">Valor do Produto:</label>
+                    ) : (
+                        <label className="labelInput"><CampoObrigatorio/>Valor do Produto: </label>
+                    )}
                     <input 
                         type="text" 
                         className="form-control" 
