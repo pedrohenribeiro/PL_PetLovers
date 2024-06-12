@@ -176,8 +176,7 @@ function CadastrarCliente({setCadastrando}){
                                     Adicionar Telefone
                                 </button> 
                             </div>
-                            {
-                            telefones.map((telefone, index) => (
+                            {telefones.map((telefone, index) => (
                                 <div className="field" key={index}>
                                     <label for={`telefone-${index+1}`}>{`Telefone ${index+1}:`}</label>
                                     <div className="telefone">
@@ -197,8 +196,7 @@ function CadastrarCliente({setCadastrando}){
                                         </button>
                                     </div>
                                 </div>
-                            ))
-                        } 
+                            ))} 
                         </div>
                     </div>
 

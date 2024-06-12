@@ -6,12 +6,17 @@ function ComprarServico({setComprando}){
 
     const [chartClientes, setChartClientes] = useState([]);
     const [chartServicos, setChartServicos] = useState([]);
-
+    const [chartPets, setChartPets] = useState([]);
+    
     const [cliente, setCliente] = useState('');
     const [cpfCliente, setCpfCliente] = useState('');
 
     const [servico, setServico] = useState('');
+    const [pet, setPet] = useState('');
     const [idServico, setIdServico] = useState('');
+    const [idPet, setIdPet] = useState('');
+    const [racaPet, setRacaPet] = useState('');
+    const [tipoPet, setTipoPet] = useState('');
     const [valorDoServico, setValorDoServico] = useState('');
 
     const [quantidade, setQuantidade] = useState('');
@@ -21,7 +26,9 @@ function ComprarServico({setComprando}){
 
     const [faltaCliente, setFaltaCliente] = useState(false);
     const [faltaServico, setFaltaServico] = useState(false);
+    const [faltaPet, setFaltaPet] = useState(false);
     const [faltaQuantidade, setFaltaQuantidade] = useState(false);
+    const petsDoCliente = chartPets.filter((pet) => pet.cpfDono === cpfCliente);
     
     
     
@@ -38,11 +45,16 @@ function ComprarServico({setComprando}){
     useEffect(() => {
         FetchServicos();
         FetchClientes();
+        FetchPets();
     }, []);
 
     useEffect(() => {
         setValorDaCompra(quantidade*valorDoServico)
     }, [quantidade,valorDoServico]);
+
+    useEffect(() => {
+        setPet('')
+    }, [cliente]);
 
     async function FetchServicos() {
         try {
@@ -68,12 +80,32 @@ function ComprarServico({setComprando}){
             const clientes = response.data;
 
         const dadosClientes = clientes.map(item => ({
-            value: item.nome.split(' ').slice(0, 2).join(' '),
+            value: item.nome,
             cpf: item.cpf,
-            label: `${item.nome.split(' ').slice(0, 2).join(' ')}`,
+            label: `${item.nome}`,
         }));
 
             setChartClientes(dadosClientes);
+        } catch (error) {
+            console.error('Erro ao buscar clientes:', error);
+        }
+    };
+
+    async function FetchPets() {
+        try {
+            const response = await axios.get('http://localhost:8080/pets');
+            const pets = response.data;
+
+        const dadosPets = pets.map(item => ({
+            value: item.nome,
+            cpfDono: item.cpfDono,
+            tipo: item.tipo,
+            raca: item.raca,
+            idPet: item.id,
+            label: `${item.nome}`,
+        }));
+        console.log('dadosPets',dadosPets)
+        setChartPets(dadosPets);
         } catch (error) {
             console.error('Erro ao buscar clientes:', error);
         }
@@ -83,13 +115,18 @@ function ComprarServico({setComprando}){
         console.log("Comprar Servico");
         try {
             const newData = {
-                cpf:cliente,
+                nomeCliente:cliente,
                 produtoServico: servico,
+                idProdutoServico: idServico,
+                pet: pet,
+                idPet: idPet,
+                racaPet: racaPet,
+                tipoPet: tipoPet,
                 quantidade:quantidade,
-                valor: valorDaCompra,
-                tipo: "Servico"
+                valorTotal: valorDaCompra,
+                tipoVenda: "Servico"
             };
-            console.log("Adicionando Servico", newData);
+            console.log("Adicionando Compra", newData);
             await axios.post('http://localhost:8080/comprar', newData);
             setComprando("");
         } catch (error) {
@@ -118,6 +155,11 @@ function ComprarServico({setComprando}){
                             setFaltaQuantidade(true)
                         } else {
                             setFaltaQuantidade(false)
+                        }
+                        if(!pet){
+                            setFaltaPet(true)
+                        } else {
+                            setFaltaPet(false)
                         }
                     }
                 }}>
@@ -158,6 +200,41 @@ function ComprarServico({setComprando}){
                         {chartServicos.map((servico) => (
                             <option key={servico.value} value={servico.value} data-valor={servico.valor} data-idServico={servico.idServico}>{servico.label} - R${servico.valor}</option>
                         ))}
+                    </select>
+                  
+                </div>
+
+                <div className="input-cadastros">
+                    {!faltaPet ?(
+                        <label className="labelInput">Nome do Pet:</label>
+                    ) : (
+                        <label className="labelInput"><CampoObrigatorio/>Nome do Pet: </label>
+                    )}
+                  
+                    <select value={pet} onChange={(event) => {
+                        setPet(event.target.value); 
+                        const selectedOption = event.target.selectedOptions[0];
+                        setIdPet(selectedOption.getAttribute("data-idPet"));
+                        setRacaPet(selectedOption.getAttribute("data-racaPet"));
+                        setTipoPet(selectedOption.getAttribute("data-tipoPet"));
+                    }}>
+                        <option value="">Selecione um Pet</option>
+                        {petsDoCliente.length > 0 ? (
+                            petsDoCliente.map((pet) => (
+                                <option 
+                                    key={pet.value} 
+                                    value={pet.value} 
+                                    data-cpfDono={pet.cpfDono} 
+                                    data-idPet={pet.idPet}
+                                    data-racaPet={pet.raca}
+                                    data-tipoPet={pet.tipo}
+                                >
+                                    {pet.label}
+                                </option>
+                            ))
+                        ) : (
+                            <option value="">O cliente não tem um Pet cadastrado</option>
+                        )}
                     </select>
                   
                 </div>

@@ -52,6 +52,7 @@ function Servicos(){
                 id:idEditando,
                 nome: nomeEditando,
                 valor: valorEditando,
+                tipoVenda: 'Servico'
             };
 
             await axios.put('http://localhost:8080/servicos_editar', newData);

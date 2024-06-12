@@ -14,14 +14,16 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   vendas.init({
-    cpf: DataTypes.STRING,
+    nomeCliente: DataTypes.STRING,
     produtoServico: DataTypes.STRING,
     idProdutoServico: DataTypes.STRING,
     pet: DataTypes.STRING,
     idPet: DataTypes.STRING,
+    racaPet: DataTypes.STRING,
+    tipoPet: DataTypes.STRING,
     quantidade: DataTypes.STRING,
-    valor: DataTypes.STRING,
-    tipo: DataTypes.STRING
+    valorTotal: DataTypes.STRING,
+    tipoVenda: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'vendas',

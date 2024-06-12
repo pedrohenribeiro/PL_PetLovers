@@ -4,14 +4,21 @@ import CampoObrigatorio from "../../components/layout/CampoObrigatorio";
 
 function ComprarProduto({setComprando}){
 
+    
+
     const [chartClientes, setChartClientes] = useState([]);
     const [chartProdutos, setChartProdutos] = useState([]);
+    const [chartPets, setChartPets] = useState([]);
 
     const [cliente, setCliente] = useState('');
     const [cpfCliente, setCpfCliente] = useState('');
 
     const [produto, setProduto] = useState('');
+    const [pet, setPet] = useState('');
     const [idProduto, setIdProduto] = useState('');
+    const [idPet, setIdPet] = useState('');
+    const [racaPet, setRacaPet] = useState('');
+    const [tipoPet, setTipoPet] = useState('');
     const [valorDoProduto, setValorDoProduto] = useState('');
 
     const [quantidade, setQuantidade] = useState('');
@@ -21,8 +28,9 @@ function ComprarProduto({setComprando}){
 
     const [faltaCliente, setFaltaCliente] = useState(false);
     const [faltaProduto, setFaltaProduto] = useState(false);
+    const [faltaPet, setFaltaPet] = useState(false);
     const [faltaQuantidade, setFaltaQuantidade] = useState(false);
-    
+    const petsDoCliente = chartPets.filter((pet) => pet.cpfDono === cpfCliente);
     
     
     function EscolhaSelecionada(e){
@@ -38,6 +46,7 @@ function ComprarProduto({setComprando}){
     useEffect(() => {
         FetchProdutos();
         FetchClientes();
+        FetchPets();
     }, []);
 
     useEffect(() => {
@@ -68,9 +77,9 @@ function ComprarProduto({setComprando}){
             const clientes = response.data;
 
         const dadosClientes = clientes.map(item => ({
-            value: item.nome.split(' ').slice(0, 2).join(' '),
+            value: item.nome,
             cpf: item.cpf,
-            label: `${item.nome.split(' ').slice(0, 2).join(' ')}`,
+            label: `${item.nome}`,
         }));
 
             setChartClientes(dadosClientes);
@@ -79,24 +88,49 @@ function ComprarProduto({setComprando}){
         }
     };
 
+    async function FetchPets() {
+        try {
+            const response = await axios.get('http://localhost:8080/pets');
+            const pets = response.data;
+
+        const dadosPets = pets.map(item => ({
+            value: item.nome,
+            cpfDono: item.cpfDono,
+            tipo: item.tipo,
+            raca: item.raca,
+            idPet: item.id,
+            label: `${item.nome}`,
+        }));
+        console.log('dadosPets',dadosPets)
+        setChartPets(dadosPets);
+        } catch (error) {
+            console.error('Erro ao buscar clientes:', error);
+        }
+    };
+
     async function cadastrarCompra() {
-        console.log("Cadastrar Pet");
+        console.log("Cadastrar Compra");
         try {
             const newData = {
-                cpf:cliente,
+                nomeCliente:cliente,
                 produtoServico: produto,
+                idProdutoServico: idProduto,
+                pet: pet,
+                idPet: idPet,
+                racaPet: racaPet,
+                tipoPet: tipoPet,
                 quantidade:quantidade,
-                valor: valorDaCompra,
-                tipo: "Produto"
+                valorTotal: valorDaCompra,
+                tipoVenda: "Produto"
             };
-            console.log("Adicionando Produto", newData);
+            console.log("Adicionando Compra", newData);
             await axios.post('http://localhost:8080/comprar', newData);
             setComprando("");
         } catch (error) {
             console.error("Erro ao adicionar Produto:", error);
         }
     };
-
+    
     return (
         <div className="container-fluid">
             <form className="containerConteudo" onSubmit={(e) => { 
@@ -118,6 +152,11 @@ function ComprarProduto({setComprando}){
                             setFaltaQuantidade(true)
                         } else {
                             setFaltaQuantidade(false)
+                        }
+                        if(!pet){
+                            setFaltaPet(true)
+                        } else {
+                            setFaltaPet(false)
                         }
                     }
                 }}>
@@ -158,6 +197,41 @@ function ComprarProduto({setComprando}){
                         {chartProdutos.map((produto) => (
                             <option key={produto.value} value={produto.value} data-valor={produto.valor} data-idProduto={produto.idProduto}>{produto.label} - R${produto.valor}</option>
                         ))}
+                    </select>
+                  
+                </div>
+
+                <div className="input-cadastros">
+                    {!faltaPet ?(
+                        <label className="labelInput">Nome do Pet:</label>
+                    ) : (
+                        <label className="labelInput"><CampoObrigatorio/>Nome do Pet: </label>
+                    )}
+                  
+                    <select value={pet} onChange={(event) => {
+                        setPet(event.target.value); 
+                        const selectedOption = event.target.selectedOptions[0];
+                        setIdPet(selectedOption.getAttribute("data-idPet"));
+                        setRacaPet(selectedOption.getAttribute("data-racaPet"));
+                        setTipoPet(selectedOption.getAttribute("data-tipoPet"));
+                    }}>
+                        <option value="">Selecione um Pet</option>
+                        {petsDoCliente.length > 0 ? (
+                            petsDoCliente.map((pet) => (
+                                <option 
+                                    key={pet.value} 
+                                    value={pet.value} 
+                                    data-cpfDono={pet.cpfDono} 
+                                    data-idPet={pet.idPet}
+                                    data-racaPet={pet.raca}
+                                    data-tipoPet={pet.tipo}
+                                >
+                                    {pet.label}
+                                </option>
+                            ))
+                        ) : (
+                            <option value="">O cliente não tem um Pet cadastrado</option>
+                        )}
                     </select>
                   
                 </div>

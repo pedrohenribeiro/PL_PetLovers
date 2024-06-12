@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      cpf: {
+      nomeCliente: {
         type: Sequelize.STRING
       },
       produtoServico: {
@@ -24,13 +24,19 @@ module.exports = {
       idPet: {
         type: Sequelize.STRING
       },
+      racaPet: {
+        type: Sequelize.STRING
+      },
+      tipoPet: {
+        type: Sequelize.STRING
+      },
       quantidade: {
         type: Sequelize.STRING
       },
-      valor: {
+      valorTotal: {
         type: Sequelize.STRING
       },
-      tipo: {
+      tipoVenda: {
         type: Sequelize.STRING
       },
       createdAt: {

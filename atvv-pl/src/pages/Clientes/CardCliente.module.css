@@ -3,7 +3,7 @@
     flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
-    width: 400px;
+    width: 380px;
     background-color: #e4eeffda;
     box-shadow: hsla(236, 45%, 62%, 0.5) 0px 5px 16px !important;
     height: 240px;
@@ -47,6 +47,7 @@
     background-color: #435edac7;
     bottom: 0px;
     border-radius: 100px;
+    max-width: 340px;
     /* top: 28px; */
 }
 
@@ -55,6 +56,7 @@
     flex-direction: row;
     position: relative;
     overflow: hidden;
+    margin: 0px 30px 0px 30px;
 }
 .cardId{
     margin: 0;
@@ -151,9 +153,6 @@
     bottom: 0px;
     border-radius: 100px;
 }
-.espaçoRg{
-
-}
 
 
 
@@ -164,98 +163,3 @@
 
 
 
-
-.cardList span:first-of-type{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(to right, transparent, #435edac7);
-    animation: animar1 2s linear infinite;
-}
-.cardList:hover span:first-of-type,.cardList.active span:first-of-type{
-    background: linear-gradient(to right, transparent, #00a2ffc7);
-    animation: animar1 2s linear infinite;
-}
-@keyframes animar1 {
-    0% {
-        transform: translateX(-100%);
-    }
-    100% {
-        transform: translateX(100%);
-    }
-}
-.cardList span:nth-of-type(2){
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 3px;
-    height: 100%;
-    background: linear-gradient(to bottom, transparent, #435edac7);
-    animation: animar2 2s linear infinite;
-    animation-delay: 1s;
-}
-.cardList:hover span:nth-of-type(2),.cardList.active span:nth-of-type(2){
-    background: linear-gradient(to bottom, transparent, #00a2ffc7);
-    animation: animar2 2s linear infinite;
-    animation-delay: 1s;
-}
-
-@keyframes animar2 {
-    0% {
-        transform: translateY(-100%);
-    }
-    100% {
-        transform: translateY(100%);
-    }
-}
-
-.cardList span:nth-of-type(3){
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(to left, transparent, #435edac7);
-    animation: animar3 2s linear infinite;
-}
-
-.cardList:hover span:nth-of-type(3),.cardList.active span:nth-of-type(3){
-    background: linear-gradient(to left, transparent, #00a2ffc7);
-    animation: animar3 2s linear infinite;
-}
-
-@keyframes animar3 {
-    0% {
-        transform: translateX(100%);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
-}
-
-.cardList span:last-of-type{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 3px;
-    height: 100%;
-    background: linear-gradient(to top, transparent, #435edac7);
-    animation: animar4 2s linear infinite;
-    animation-delay: 1s;
-}
-.cardList:hover span:nth-of-type(4),.cardList.active span:nth-of-type(4){
-    background: linear-gradient(to top, transparent, #00a2ffc7);
-    animation: animar4 2s linear infinite;
-    animation-delay: 1s;
-}
-
-@keyframes animar4 {
-    0% {
-        transform: translateY(100%);
-    }
-    100% {
-        transform: translateY(-100%);
-    }
-}

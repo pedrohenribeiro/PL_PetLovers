@@ -13,7 +13,7 @@ function Clientes(){
     const [nomeSocialEditando, setNomeSocialEditando] = useState("");
     const [cpfEditando, setCpfEditando] = useState("");
     const [emailEditando, setEmailEditando] = useState("");
-    const [telefoneEditando, setTelefoneEditando] = useState([]);
+    const [telefoneEditando, setTelefoneEditando] = useState("");
     const [dataEmissaoCpfEditando, setDataEmissaoCpfEditando] = useState("");
     const [RgsEditando, setRgsEditando] = useState(""); 
 
@@ -96,12 +96,13 @@ function Clientes(){
             };
             console.log('Teste Editar Cliente:',newData)
             await axios.put('http://localhost:8080/cliente_editar', newData);
-            for (let telefone of telefoneEditando){
+            console.log(telefoneEditando)
+            for (let telefone of telefoneEditando) {
                 const newDataTelefone = {
                     id: telefone.id,
                     telefone: telefone.telefone,
-                }
-                console.log("todos os telefones:", newDataTelefone);
+                };
+                console.log("Atualizando telefone:", newDataTelefone);
                 await axios.put('http://localhost:8080/telefone_editar', newDataTelefone);
             }
 
@@ -146,18 +147,33 @@ function Clientes(){
         setNumeroEditando(numero)
         setCepEditando(cep)
         setComplementoEditando(complemento)
-        console.log('dadosTelefones',telefoneEditando)
+        console.warn("teste")
+        console.log(dadosRgs)
+        console.log(dadosTelefones)
+        
         setEditando("editando")
     }
+
+    
+
+
+/*     const handleChangeTelefone = (e, index) => {
+        const { name, value } = e.target;
+        const updatedDadosTelefone = [...telefoneEditando];
+        console.log('AEA',updatedDadosTelefone)
+        updatedDadosTelefone[index] = e.target.value;
+        setTelefoneEditando(updatedDadosTelefone);
+    }; */
 
     const handleChangeTelefone = (e, index) => {
         const { name, value } = e.target;
         const updatedDadosTelefone = [...telefoneEditando];
-        updatedDadosTelefone[index][name] = value;
-        setTelefoneEditando([updatedDadosTelefone]);
-        console.log("alterando dados Telefone", updatedDadosTelefone)
+        updatedDadosTelefone[index] = {
+            ...updatedDadosTelefone[index], // Mantém as outras propriedades
+            [name]: value // Atualiza apenas o telefone
+        };
+        setTelefoneEditando(updatedDadosTelefone);
     };
-
     
     const atualizarDadosRgs = (e, index) => {
         const { name, value } = e.target;
@@ -214,9 +230,8 @@ function Clientes(){
                                         onChange={(e) => setEmailEditando(e.target.value)}
                                     />
                                 </div>
-                                {telefoneEditando.map((t, index) => (//criar um componente para subistituir essa função
-                                    <div  >
-                                        <div className="input-cadastros">
+                                {telefoneEditando.map((t, index) => (
+                                    <div className="input-cadastros" key={index}>
                                             <label className="labelInput"><b>Telefone {index+1}:</b></label>
                                             <InputMask 
                                                 type="text" 
@@ -226,12 +241,10 @@ function Clientes(){
                                                 mask="(99) 99999-9999"
                                                 aria-describedby="basic-addon1" 
                                                 name='telefone'
-                                                value={t.telefone}
+                                                value={t.telefone} // Acessa a propriedade telefone
                                                 onChange={(e) => handleChangeTelefone(e, index)}
                                             />
-                                        </div>
                                     </div>
-                                    
                                 ))}
                                 <div className="input-cadastros">
                                     <label className="labelInput">CPF:</label>
@@ -258,8 +271,8 @@ function Clientes(){
                                     />
                                 </div>
                                 {RgsEditando.map((item, index) => (
-                                    <div>
-                                        <div className="input-cadastros" key={index}>
+                                    <div key={index}>
+                                        <div className="input-cadastros" >
                                             <b>Dados do Rg {index+1}:</b>
                                         </div>
                                         <div className="input-cadastros" key={index}>
@@ -293,7 +306,7 @@ function Clientes(){
                                                 </div>
                                             </div>
                                             </div>
-                                            <div className="input-cadastros" key={index}>
+                                            <div className="input-cadastros" >
                                             <div className="input-cadastros">
                                                 <label className="labelInput" htmlFor="Data de emissão do RG">Data de Emissao do RG:</label>
                                                 <InputMask

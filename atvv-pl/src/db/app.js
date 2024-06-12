@@ -163,8 +163,9 @@ app.put('/servicos_editar', async (req, res) => {
 
     try {
  
-        await connection.query('UPDATE servicos SET nome = ?, valor = ? WHERE id = ?', [data.nome, data.valor, data.id]);
-  
+        const result1 = await connection.query('UPDATE servicos SET nome = ?, valor = ? WHERE id = ?', [data.nome, data.valor, data.id]);
+        const result2 = await connection.query('UPDATE vendas SET produtoServico = ? WHERE idProdutoServico = ? AND tipoVenda = ?', 
+            [data.nome, data.id, data.tipoVenda]);
       res.status(200).send('Dados atualizados com sucesso');
     }
     
@@ -203,14 +204,22 @@ app.delete('/produtos/:id', async (req, res) => {
 app.put('/produtos_editar', async (req, res) => {
     const data = req.body; 
     try {
-        await connection.query('UPDATE produtos SET nome = ?, valor = ? WHERE id = ?', [data.nome, data.valor, data.id]);
+        console.log('Dados recebidos:', data);
+        
+        const result1 = await connection.query('UPDATE produtos SET nome = ?, valor = ? WHERE id = ?', 
+            [data.nome, data.valor, data.id]);
+        const result2 = await connection.query('UPDATE vendas SET produtoServico = ? WHERE idProdutoServico = ? AND tipoVenda = ?', 
+            [data.nome, data.id, data.tipo]);
+        
         res.status(200).send('Dados atualizados com sucesso');
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Erro ao atualizar os dados:', error);
       res.status(500).send('Erro ao atualizar os dados');
     }
 });
+
+
+
 
 app.get('/pets', async (req, res) => {
     try {
@@ -240,7 +249,11 @@ app.delete('/pets/:id', async (req, res) => {
 app.put('/pets_editar', async (req, res) => {
     const data = req.body; 
     try {
-        await connection.query('UPDATE pets SET nome = ?, tipo = ?, raca = ?, genero = ?, nomeDono = ?, cpfDono = ? WHERE id = ?', [data.nome, data.tipo, data.raca, data.genero, data.nomeDono,data.cpfDono, data.id]);
+        const result1 = await connection.query('UPDATE pets SET nome = ?, tipo = ?, raca = ?, genero = ?, nomeDono = ?, cpfDono = ? WHERE id = ?', 
+            [data.nome, data.tipo, data.raca, data.genero, data.nomeDono,data.cpfDono, data.id]);
+      
+        const result2 = await connection.query('UPDATE vendas SET pet = ?, racaPet = ?, tipoPet = ? WHERE idPet = ?', 
+            [data.nome, data.raca, data.tipo,data.id]);
         res.status(200).send('Dados atualizados com sucesso');
     }
     catch (error) {
@@ -287,6 +300,17 @@ app.get('/telefones', async (req, res) => {
     } catch (error) {
         console.error('Erro ao buscar telefone:', error);
         res.status(500).send('Erro ao buscar telefones');
+    }
+});
+app.put('/telefone_editar', async (req, res) => {
+    const data = req.body; 
+    try {
+        await connection.query('UPDATE telefones SET telefone = ? WHERE id = ?', [data.telefone, data.id,]);
+        res.status(200).send('Dados atualizados com sucesso');
+    }
+    catch (error) {
+      console.error('Erro ao atualizar os dados:', error);
+      res.status(500).send('Erro ao atualizar os dados');
     }
 });
 app.post('/rg_adicionar', async (req, res) => {
@@ -349,3 +373,85 @@ app.put('/cliente_editar', async (req, res) => {
       res.status(500).send('Erro ao atualizar os dados');
     }
 });
+
+app.get('/listagem_top_10_quantidade', async (req, res) => {
+    try {
+        const [rows, fields] = await connection.query(`
+            SELECT produtoServico, nomeCliente,valorTotal, SUM(quantidade) as totalQuantidade
+            FROM vendas
+            GROUP BY nomeCliente,produtoServico,valorTotal
+            ORDER BY totalQuantidade DESC
+            LIMIT 10;
+        `);
+        console.log(rows);
+        
+        res.json(rows);
+    } catch (error) {
+        console.error('Erro ao buscar telefone:', error);
+        res.status(500).send('Erro ao buscar telefones');
+    }
+});
+
+app.get('/listagem_top_10_valor', async (req, res) => {
+    try {
+        const [rows, fields] = await connection.query(`
+            SELECT produtoServico, nomeCliente,quantidade, SUM(valorTotal) as totalValor
+            FROM vendas
+            GROUP BY nomeCliente,produtoServico,quantidade
+            ORDER BY totalValor DESC
+            LIMIT 10;
+        `);
+        console.log(rows);
+        
+        res.json(rows);
+    } catch (error) {
+        console.error('Erro ao buscar telefone:', error);
+        res.status(500).send('Erro ao buscar telefones');
+    }
+});
+
+app.get('/listagem_geral_produtosServicos_mais_consumidos', async (req, res) => {
+    try {
+        const [rows, fields] = await connection.query(`
+            SELECT produtoServico, SUM(quantidade) as totalConsumido
+            FROM vendas
+            GROUP BY produtoServico
+            ORDER BY totalConsumido DESC;
+        `);
+        console.log(rows);
+        
+        res.json(rows);
+    } catch (error) {
+        console.error('Erro ao buscar os produtos mais consumidos:', error);
+        res.status(500).send('Erro ao buscar os produtos mais consumidos');
+    }
+});
+//arrumarr------------------------------------------------
+app.get('/listagem_produtosServicos_mais_consumidos_por_tipoPet', async (req, res) => {
+    try {
+        const [rows, fields] = await connection.query(`
+            SELECT tipoPet, racaPet, produtoServico, SUM(quantidade) as totalConsumido
+            FROM vendas
+            GROUP BY tipoPet, racaPet, produtoServico
+            ORDER BY totalConsumido DESC;
+        `);
+        console.log(rows);
+        
+        res.json(rows);
+    } catch (error) {
+        console.error('Erro ao buscar os produtos e serviços mais consumidos por tipo de pet:', error);
+        res.status(500).send('Erro ao buscar os produtos e serviços mais consumidos por tipo de pet');
+    }
+});
+
+//so tipo
+/* const [rows, fields] = await connection.query(`
+    SELECT tipoPet, produtoServico, SUM(quantidade) as totalConsumido
+    FROM vendas
+    GROUP BY tipoPet, produtoServico
+    ORDER BY totalConsumido DESC;
+`); */
+
+
+
+

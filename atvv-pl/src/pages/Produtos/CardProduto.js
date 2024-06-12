@@ -7,10 +7,6 @@ function CardProduto({numero,nome,valor,deletarProduto,abrirModal}){
     return(
         <div>
         <div className={styles.cardList}> 
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
             <div className={styles.cardId}>
                 <p className={styles.cardIdConteudo}>{numero}</p>            
             </div> 
@@ -18,7 +14,8 @@ function CardProduto({numero,nome,valor,deletarProduto,abrirModal}){
                 <p>{nome}</p>
             </div>
             <div className={styles.cardConteudo}>                 
-                <p>Valor: R${valor}</p>
+                <b>Valor</b>
+                <p className={styles.informacoes}>  : R${valor}</p>
             </div>
 
             <div className={styles.cardBotoes}>

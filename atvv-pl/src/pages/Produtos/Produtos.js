@@ -51,6 +51,7 @@ function Produtos(){
                 id:idEditando,
                 nome: nomeEditando,
                 valor: valorEditando,
+                tipo: 'Produto'
             };
 
             await axios.put('http://localhost:8080/produtos_editar', newData);

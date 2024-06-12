@@ -6,10 +6,6 @@ import { IoIosRemoveCircleOutline } from "react-icons/io";
 function CardPet({numero,nome,tipo,raca,genero,nomeDono,cpfDono,DeletarPet,AbrirModal}){
     return(
         <div className={styles.cardList}> 
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
             <div className={styles.cardId}>
                 <p className={styles.cardIdConteudo}>{numero}</p>            
             </div> 

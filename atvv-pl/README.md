@@ -13,7 +13,7 @@ Pets
 npx sequelize-cli model:generate --name pets --attributes nome:string,tipo:string,raca:string,genero:string,dono:string
 
 Vendas
-npx sequelize-cli model:generate --name vendas --attributes cpf:string,produtoServico:string,quantidade:string,valor:string,tipo:string
+npx sequelize-cli model:generate --name vendas --attributes cpfCliente:string,produtoServico:string,quantidade:string,valorTotalVenda:string,tipo:string,pet:string,idPet:string,tipoPet:string,racaPet:string
 
 Telefones
 npx sequelize-cli model:generate --name telefones --attributes telefone:string,idCliente:integer

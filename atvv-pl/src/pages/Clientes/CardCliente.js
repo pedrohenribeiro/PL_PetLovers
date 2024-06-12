@@ -16,10 +16,6 @@ function CardCliente({id,nome,nomeSocial,email,dadosTelefones,cpf,dataEmissaoCpf
 
     return(
         <div className={`${styles.cardList} ${ativo ? styles.active : ''}`}> 
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
             <div className={styles.cardId}>
                 <p className={styles.cardIdConteudo}>{id}</p>            
             </div> 
