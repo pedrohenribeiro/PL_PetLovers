@@ -6,7 +6,7 @@
     width: 380px;
     background-color: #d8e5ffda;
     box-shadow: hsla(236, 45%, 62%, 0.5) 0px 5px 16px !important;
-    height: 210px;
+    height: auto;
     border-radius: 10px;
     transition: 0.2s;
 
