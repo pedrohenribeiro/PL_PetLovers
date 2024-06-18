@@ -12,12 +12,14 @@ Lista 2
 ```
 cd atvi-pl
 npm install
+npm start
 ```
 ----------------
 Lista 3
 ```
 cd atvi-pl
 npm install
+npm start
 ```
 --------------
 Lista 4
@@ -42,6 +44,7 @@ cd src
 cd db
 ```
 Mudar sua senha do banco no .env
+criar no banco de dados mysql:
 ```mysql
 create database petLovers;
 ```
