@@ -2,7 +2,7 @@ import promptSync from "prompt-sync";
 export default class Entrada {
     public receberNumero(mensagem: string): number {
         let prompt = promptSync();
-        let valor = prompt(mensagem)
+        let valor = prompt(mensagem).replace(',', '.');
         let numero  = new Number(valor)
         return numero.valueOf()
     }

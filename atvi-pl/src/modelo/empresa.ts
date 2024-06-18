@@ -1,3 +1,4 @@
+import RegistroConsumo from "../negocio/registrarConsumo"
 import Cliente from "./cliente"
 import Produto from "./produto"
 import Servico from "./servico"
@@ -10,6 +11,7 @@ export default class Empresa{
         this.clientes = []
         this.produtos = []
         this.servicos = []
+
     }
     public get getClientes(){
         return this.clientes

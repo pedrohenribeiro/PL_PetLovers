@@ -1,4 +1,5 @@
 export default class Pet {
+    
     private nome: string
     private tipo: string
     private raca: string
@@ -15,4 +16,17 @@ export default class Pet {
     public get getRaca(){return this.raca}
     public get getGenero(){return this.genero}
     public get getTipo(){return this.tipo}
+
+    public setNome(novoNome: string): void {
+        this.nome = novoNome;
+    }
+    public setRaca(novaRaca: string): void {
+        this.raca = novaRaca;
+    }
+    public setGenero(novoGenero: string): void {
+        this.genero = novoGenero;
+    }
+    public setTipo(novoTipo: string): void {
+        this.tipo = novoTipo;
+    }
 }
