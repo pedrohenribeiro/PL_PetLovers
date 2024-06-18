@@ -10,21 +10,21 @@ node out/app/main.js
 --------------------
 Lista 2
 ```
-cd atvi-pl
+cd atvii-pl
 npm install
 npm start
 ```
 ----------------
 Lista 3
 ```
-cd atvi-pl
+cd atviii-pl
 npm install
 npm start
 ```
 --------------
 Lista 4
 ```
-cd atvi-pl
+cd atviv-pl
 npm install
 ```
 ------------
