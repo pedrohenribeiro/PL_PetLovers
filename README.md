@@ -23,9 +23,16 @@ npm start
 ```
 --------------
 Lista 4
+frontend
 ```
 cd atviv-pl
+cd frontEnd
 npm install
+```
+backend
+```
+cd atviv-pl/executavel
+java -jar pl.jar
 ```
 ------------
 Lista 5
