@@ -21,7 +21,9 @@ html, body, #root {
   box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 16px !important;
 } 
 .containerConteudoClientes{
-  width: 640px;
+  min-width: 400px;
+  max-width: 640px;
+  width: auto;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -188,38 +190,47 @@ html, body, #root {
 .primeiro{
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 10px;
   margin: 0;
 }
 .primeiro input{
-  width: 295px !important;
+  width: auto;
+  max-width: 295px !important;
 }
 .segundo{
   display: flex;
   flex-direction: row;
   gap: 10px;
+  flex-wrap: wrap;
 }
 .segundo input{
-  width: 190px !important;
+  width: auto;
+  max-width: 190px !important;
 }
 .dadosEndereco{
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   justify-content: center;
 }
 #bairro{
-  width: 200px !important;
+  width: auto;
+  max-width: 200px !important;
 }
 .tituloCadastro{
+  width: auto;
   text-align: center;
 }
 .terceiro{
   display: flex;
   flex-direction: row;
   gap: 10px;
+  flex-wrap: wrap;
 }
 .terceiro input{
-  width: 295px !important;
+  width: auto;
+  max-width: 295px !important;
 }
 .conjuntoCard{
   display: flex;

@@ -28,6 +28,7 @@ frontend
 cd atviv-pl
 cd frontEnd
 npm install
+npm start
 ```
 backend
 ```
