@@ -162,17 +162,8 @@ function CadastrarCliente({setCadastrando}){
                         <div className="input-cadastros">
                             <label className="labelInput" htmlFor="Telefone">Telefone:</label>
 
-{/*                             <InputMask
-                                type="text"
-                                className="form-control"
-                                placeholder="(00) 00000-0000"
-                                aria-describedby="basic-addon1" 
-                                mask="(99) 99999-9999"  
-                                value={telefone}
-                                onChange={event => setTelefone(event.target.value)}
-                            /> */}
                             <div className="field">
-                                <button type="button" onClick={adicionarTelefone}>
+                                <button type="button" className="botaoTelefone" onClick={adicionarTelefone}>
                                     Adicionar Telefone
                                 </button> 
                             </div>
@@ -227,7 +218,7 @@ function CadastrarCliente({setCadastrando}){
                             />
                         </div>
                         <div className="field">
-                                <button type="button" class="btn btn-light" onClick={adicionarDadosRgs}> Adicionar Dados do(s) RG(s)</button>           
+                                <button type="button" class="botaoRg" onClick={adicionarDadosRgs}> Adicionar Dados do(s) RG(s)</button>           
                         </div>
                         
                         {dadosRG.map((item, index) => (

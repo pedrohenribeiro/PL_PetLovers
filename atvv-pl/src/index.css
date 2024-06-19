@@ -251,3 +251,33 @@ html, body, #root {
 .telefone input{
   width: 260px !important;
 }
+.botaoRg{
+  border-radius: 10px;
+  border: 2px solid #b8e1ff;
+  background-color: #e3f2fd;
+  width: auto;
+  font-size: 18px;
+  margin: 0px 5px 0px 5px;
+  transition: 0.3s;
+}
+.botaoRg:hover{
+  transition: 0.3s;
+  background-color: #addeff;
+  border: 2px solid #6ac1ff;
+  font-weight: 500;
+}
+.botaoTelefone{
+  border-radius: 10px;
+  border: 2px solid #b8e1ff;
+  background-color: #e3f2fd;
+  width: auto;
+  font-size: 18px;
+  margin: 0px 5px 0px 5px;
+  transition: 0.3s;
+}
+.botaoTelefone:hover{
+  transition: 0.3s;
+  background-color: #addeff;
+  border: 2px solid #6ac1ff;
+  font-weight: 500;
+}
