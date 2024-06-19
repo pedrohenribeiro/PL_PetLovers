@@ -324,6 +324,67 @@ function Clientes(){
                                     </div>
                                 ))}
 
+                                <div className="input-cadastros">
+                                    <label className="labelInput">Estado:</label>
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        placeholder="Estado:" 
+                                        aria-label="Estado:" 
+                                        aria-describedby="basic-addon1" 
+                                        value={estadoEditando}
+                                        onChange={(e) => setEstadoEditando(e.target.value)}
+                                    />
+                                </div>
+                                <div className="input-cadastros">
+                                    <label className="labelInput">Cidade:</label>
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        placeholder="Cidade:" 
+                                        aria-label="Cidade:" 
+                                        aria-describedby="basic-addon1" 
+                                        value={cidadeEditando}
+                                        onChange={(e) => setCidadeEditando(e.target.value)}
+                                    />
+                                </div>
+                                <div className="input-cadastros">
+                                    <label className="labelInput">Bairro:</label>
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        placeholder="Bairro:" 
+                                        aria-label="Bairro:" 
+                                        aria-describedby="basic-addon1" 
+                                        value={bairroEditando}
+                                        onChange={(e) => setBairroEditando(e.target.value)}
+                                    />
+                                </div>
+                                <div className="input-cadastros">
+                                    <label className="labelInput">CEP:</label>
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        placeholder="CEP" 
+                                        aria-label="CEP" 
+                                        aria-describedby="basic-addon1" 
+                                        value={cepEditando}
+                                        onChange={(e) => setCepEditando(e.target.value)}
+                                    />
+                                </div>
+                                <div className="input-cadastros">
+                                    <label className="labelInput">Complemento:</label>
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        placeholder="Complemento:" 
+                                        aria-label="Complemento:" 
+                                        aria-describedby="basic-addon1" 
+                                        value={complementoEditando}
+                                        onChange={(e) => setComplementoEditando(e.target.value)}
+                                    />
+                                </div>
+
 
 
                                 <div className="form-botoes">
